@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PièceAuto 44</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f5f5f0;color:#1a1a1a;min-height:100vh}
+
+/* CONFIG BANNER */
+.config-banner{background:#fff8ee;border-bottom:2px solid #e8a020;padding:14px 1rem;text-align:center}
+.config-banner p{font-size:14px;margin-bottom:10px;font-weight:500}
+.config-fields{display:flex;gap:8px;max-width:680px;margin:0 auto;flex-wrap:wrap}
+.config-fields input{flex:1;padding:8px 12px;border:0.5px solid #ccc;border-radius:8px;font-size:13px;min-width:200px}
+.btn-config{background:#e8a020;border:none;color:#1a1a1a;font-weight:600;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px;white-space:nowrap}
+.config-ok{background:#eaf3de;border-bottom:0.5px solid #b0d890;padding:10px;text-align:center;font-size:13px;color:#3b6d11;display:none}
+
+nav{background:#1a1a1a;color:#fff;padding:0 1rem;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:200}
+.nav-logo{font-size:17px;font-weight:600;display:flex;align-items:center;gap:8px;cursor:pointer}
+.nav-logo span{color:#e8a020}
+.nav-btns{display:flex;gap:8px;align-items:center}
+.btn-nav{background:transparent;border:1px solid rgba(255,255,255,0.25);color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px}
+.btn-nav.primary{background:#e8a020;border-color:#e8a020;color:#1a1a1a;font-weight:500}
+.btn-nav:hover{opacity:.85}
+.avatar-nav{width:30px;height:30px;border-radius:50%;background:#e8a020;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#1a1a1a;cursor:pointer}
+
+.view{display:none}.view.active{display:block}
+
+.auth-wrap{min-height:calc(100vh - 52px);display:flex;align-items:center;justify-content:center;padding:2rem 1rem}
+.auth-box{background:#fff;border-radius:14px;border:0.5px solid #e0e0e0;padding:2rem;width:100%;max-width:380px}
+.auth-logo{text-align:center;font-size:22px;font-weight:700;margin-bottom:4px}
+.auth-logo span{color:#e8a020}
+.auth-sub{text-align:center;font-size:13px;color:#888;margin-bottom:1.5rem}
+.auth-tabs{display:flex;background:#f5f5f0;border-radius:8px;padding:3px;margin-bottom:1.5rem}
+.auth-tab{flex:1;padding:7px;text-align:center;font-size:13px;border-radius:6px;cursor:pointer;color:#666}
+.auth-tab.active{background:#fff;color:#1a1a1a;font-weight:500}
+.form-group{margin-bottom:1rem}
+label{display:block;font-size:13px;font-weight:500;margin-bottom:5px;color:#444}
+input[type=text],input[type=email],input[type=password],input[type=number],select,textarea{width:100%;padding:9px 12px;border:0.5px solid #ccc;border-radius:8px;font-size:14px;background:#fff}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#888}
+textarea{resize:vertical;min-height:80px}
+.btn-primary{background:#1a1a1a;color:#fff;border:none;padding:11px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;width:100%}
+.btn-primary:hover{background:#333}
+.btn-amber{background:#e8a020;color:#1a1a1a;border:none;padding:11px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;width:100%}
+.btn-amber:hover{background:#d4901a}
+.err-msg{color:#a32d2d;font-size:13px;text-align:center;margin-top:8px;display:none}
+.info-msg{color:#3b6d11;font-size:13px;text-align:center;margin-top:8px;display:none;background:#eaf3de;padding:8px;border-radius:8px}
+
+.hero{background:#1a1a1a;color:#fff;padding:2rem 1rem 1.5rem;text-align:center}
+.hero h1{font-size:22px;font-weight:600;margin-bottom:6px}
+.hero p{font-size:14px;color:rgba(255,255,255,.6);margin-bottom:1.25rem}
+.search-bar{display:flex;gap:8px;max-width:560px;margin:0 auto;flex-wrap:wrap}
+.search-bar input{flex:1;padding:10px 14px;border-radius:8px;border:none;font-size:14px;background:#fff;min-width:140px}
+.search-bar select{padding:10px;border-radius:8px;border:none;font-size:13px;background:#fff;cursor:pointer}
+.btn-search{background:#e8a020;border:none;color:#1a1a1a;font-weight:600;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:14px}
+
+.vin-banner{background:#fff8ee;border-bottom:0.5px solid #f0d090;padding:10px 1rem;display:flex;align-items:center;gap:10px;justify-content:center;flex-wrap:wrap}
+.vin-input-wrap{display:flex;gap:6px}
+.vin-input-wrap input{padding:7px 12px;border:0.5px solid #ccc;border-radius:8px;font-size:13px;width:150px;text-transform:uppercase}
+.btn-vin{background:#e8a020;border:none;color:#1a1a1a;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer}
+.vin-result{font-size:13px;color:#3b6d11;background:#eaf3de;padding:5px 12px;border-radius:20px;display:none}
+
+.filters{background:#fff;border-bottom:0.5px solid #e0e0e0;padding:10px 1rem;display:flex;gap:8px;overflow-x:auto}
+.chip{background:#f0f0ec;border:0.5px solid #ddd;border-radius:20px;padding:5px 14px;font-size:13px;cursor:pointer;white-space:nowrap;color:#333}
+.chip.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+
+.annonces{padding:1rem;max-width:800px;margin:0 auto}
+.annonces-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.annonces-header span{font-size:14px;color:#666}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.card{background:#fff;border-radius:10px;border:0.5px solid #e0e0e0;overflow:hidden;cursor:pointer;transition:transform .15s}
+.card:hover{transform:translateY(-2px);border-color:#c0c0c0}
+.card-img{width:100%;height:130px;background:#f0ede8;display:flex;align-items:center;justify-content:center;font-size:36px;overflow:hidden}
+.card-img img{width:100%;height:100%;object-fit:cover}
+.card-body{padding:10px 12px}
+.card-title{font-size:14px;font-weight:500;margin-bottom:4px;line-height:1.3}
+.card-meta{font-size:12px;color:#888;margin-bottom:5px}
+.card-footer{display:flex;justify-content:space-between;align-items:center}
+.card-price{font-size:16px;font-weight:600}
+.badge{font-size:11px;padding:2px 8px;border-radius:10px;background:#eaf3de;color:#3b6d11}
+.badge.used{background:#faeeda;color:#854f0b}
+
+.detail{max-width:680px;margin:0 auto;padding:1rem}
+.detail-back{display:flex;align-items:center;gap:6px;font-size:14px;color:#555;cursor:pointer;margin-bottom:1rem;background:none;border:none}
+.detail-img{width:100%;height:220px;background:#f0ede8;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:64px;margin-bottom:1rem;overflow:hidden}
+.detail-img img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+.detail-title{font-size:20px;font-weight:600;margin-bottom:4px}
+.detail-price{font-size:24px;font-weight:700;color:#e8a020;margin-bottom:12px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem}
+.tag{font-size:12px;padding:4px 10px;border-radius:6px;background:#f0f0ec;color:#444;border:0.5px solid #ddd}
+.section-label{font-size:12px;font-weight:500;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;margin-top:1rem}
+.desc-box{font-size:14px;line-height:1.6;color:#444;background:#f9f9f7;border-radius:8px;padding:12px}
+.seller-card{display:flex;align-items:center;gap:12px;background:#fff;border:0.5px solid #e0e0e0;border-radius:10px;padding:12px 14px;margin-top:1rem}
+.avatar{width:40px;height:40px;border-radius:50%;background:#1a1a1a;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600;flex-shrink:0}
+.seller-name{font-size:14px;font-weight:500}
+.seller-sub{font-size:12px;color:#888}
+.stars-display{color:#e8a020;font-size:14px}
+.rating-form{background:#f9f9f7;border-radius:10px;padding:14px;margin-top:1rem;border:0.5px solid #e0e0e0}
+.rating-form p{font-size:13px;font-weight:500;margin-bottom:8px}
+.stars-input{display:flex;gap:4px;margin-bottom:10px}
+.star-btn{background:none;border:none;font-size:22px;cursor:pointer;color:#ccc;padding:0}
+.star-btn.lit{color:#e8a020}
+.btn-contact{background:#1a1a1a;color:#fff;border:none;padding:11px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;width:100%;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-contact:hover{background:#333}
+.btn-wha{background:#25d366;color:#fff;border:none;padding:11px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;width:100%;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+
+.form-view{max-width:560px;margin:0 auto;padding:1.5rem 1rem}
+.form-title{font-size:20px;font-weight:600;margin-bottom:1.5rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.upload-zone{border:1.5px dashed #ccc;border-radius:10px;padding:1.5rem;text-align:center;color:#888;font-size:14px;cursor:pointer;background:#fafaf8;position:relative}
+.upload-zone i{font-size:28px;display:block;margin-bottom:6px}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.photo-preview{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.photo-thumb{width:60px;height:60px;border-radius:6px;object-fit:cover;border:0.5px solid #ddd}
+.success-msg{display:none;background:#eaf3de;color:#3b6d11;border-radius:10px;padding:1rem;text-align:center;font-size:14px;margin-top:1rem}
+
+.msg-view{max-width:560px;margin:0 auto;padding:1rem}
+.msg-title{font-size:18px;font-weight:600;margin-bottom:1rem}
+.msg-thread{display:flex;flex-direction:column;gap:8px}
+.msg-item{display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:12px;border:0.5px solid #e0e0e0;cursor:pointer}
+.msg-item:hover{border-color:#bbb}
+.msg-unread{border-left:3px solid #e8a020}
+.msg-avatar{width:38px;height:38px;border-radius:50%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+.msg-content{flex:1;min-width:0}
+.msg-name{font-size:14px;font-weight:500}
+.msg-preview{font-size:12px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.msg-time{font-size:11px;color:#aaa;flex-shrink:0}
+
+.chat-wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;height:calc(100vh - 52px)}
+.chat-header{display:flex;align-items:center;gap:10px;padding:12px 1rem;background:#fff;border-bottom:0.5px solid #e0e0e0}
+.chat-back{background:none;border:none;cursor:pointer;font-size:20px;color:#333}
+.chat-title{font-size:15px;font-weight:500}
+.chat-sub{font-size:12px;color:#888}
+.chat-messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:10px;background:#f5f5f0}
+.bubble{max-width:75%;padding:10px 13px;border-radius:12px;font-size:14px;line-height:1.5}
+.bubble.them{background:#fff;border:0.5px solid #e0e0e0;align-self:flex-start;border-bottom-left-radius:4px}
+.bubble.me{background:#1a1a1a;color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.bubble-time{font-size:11px;color:#aaa;margin-top:2px}
+.chat-input-bar{padding:10px 1rem;background:#fff;border-top:0.5px solid #e0e0e0;display:flex;gap:8px}
+.chat-input-bar input{flex:1;padding:9px 12px;border:0.5px solid #ccc;border-radius:20px;font-size:14px}
+.btn-send{background:#1a1a1a;color:#fff;border:none;width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+.profil-wrap{max-width:480px;margin:0 auto;padding:1.5rem 1rem}
+.profil-header{display:flex;align-items:center;gap:14px;margin-bottom:1.5rem}
+.profil-avatar{width:56px;height:56px;border-radius:50%;background:#1a1a1a;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:600}
+.profil-name{font-size:18px;font-weight:600}
+.profil-email{font-size:13px;color:#888}
+.profil-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1.5rem}
+.stat-card{background:#fff;border-radius:10px;border:0.5px solid #e0e0e0;padding:12px;text-align:center}
+.stat-val{font-size:22px;font-weight:600}
+.stat-lbl{font-size:12px;color:#888}
+.profil-annonces{display:flex;flex-direction:column;gap:8px}
+.pai{background:#fff;border-radius:10px;border:0.5px solid #e0e0e0;padding:12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.pai:hover{border-color:#bbb}
+.pai p{font-size:14px;font-weight:500}
+.pai span{font-size:12px;color:#888}
+.pai-price{font-size:16px;font-weight:600;color:#e8a020}
+.btn-logout{background:none;border:0.5px solid #ccc;color:#888;padding:10px;border-radius:8px;cursor:pointer;width:100%;margin-top:1.5rem;font-size:14px}
+.btn-logout:hover{border-color:#999;color:#444}
+
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid #ccc;border-top-color:#888;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading{text-align:center;padding:2rem;color:#aaa;font-size:14px}
+.empty-state{text-align:center;padding:3rem 1rem;color:#aaa}
+.empty-state i{font-size:40px;display:block;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<!-- CONFIG -->
+<div class="config-banner" id="config-banner">
+  <p><i class="ti ti-settings" aria-hidden="true"></i> Configure ta connexion Supabase</p>
+  <div class="config-fields">
+    <input type="text" id="sb-url" placeholder="https://xxxx.supabase.co">
+    <input type="text" id="sb-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+    <button class="btn-config" onclick="initSupabase()">Connecter</button>
+  </div>
+</div>
+<div class="config-ok" id="config-ok"><i class="ti ti-circle-check"></i> Supabase connecté — données en temps réel</div>
+
+<nav>
+  <div class="nav-logo" onclick="showView('liste')"><i class="ti ti-car" aria-hidden="true"></i>Pièce<span>Auto</span> 44</div>
+  <div class="nav-btns" id="nav-btns">
+    <button class="btn-nav" onclick="showView('auth')">Connexion</button>
+    <button class="btn-nav primary" onclick="showView('depot')"><i class="ti ti-plus"></i> Déposer</button>
+  </div>
+</nav>
+
+<!-- AUTH -->
+<div id="view-auth" class="view">
+  <div class="auth-wrap">
+    <div class="auth-box">
+      <div class="auth-logo">Pièce<span>Auto</span> 44</div>
+      <div class="auth-sub">Pièces auto entre particuliers · Pays de Loire</div>
+      <div class="auth-tabs">
+        <div class="auth-tab active" onclick="switchAuthTab('login')">Connexion</div>
+        <div class="auth-tab" onclick="switchAuthTab('register')">Inscription</div>
+      </div>
+      <div id="auth-login">
+        <div class="form-group"><label>Email</label><input type="email" id="login-email" placeholder="vous@email.com"></div>
+        <div class="form-group"><label>Mot de passe</label><input type="password" id="login-pw" placeholder="••••••••"></div>
+        <button class="btn-primary" id="btn-login" onclick="doLogin()">Se connecter</button>
+        <p class="err-msg" id="login-err"></p>
+        <p class="info-msg" id="login-info"></p>
+      </div>
+      <div id="auth-register" style="display:none">
+        <div class="form-group"><label>Prénom &amp; nom</label><input type="text" id="reg-name" placeholder="Jean Dupont"></div>
+        <div class="form-group"><label>Email</label><input type="email" id="reg-email" placeholder="vous@email.com"></div>
+        <div class="form-group"><label>Ville</label>
+          <select id="reg-ville"><option>Nantes</option><option>Saint-Nazaire</option><option>Clisson</option><option>Ancenis</option><option>La Baule</option><option>Châteaubriant</option><option>La Roche-sur-Yon</option></select>
+        </div>
+        <div class="form-group"><label>Mot de passe</label><input type="password" id="reg-pw" placeholder="8 caractères minimum"></div>
+        <button class="btn-primary" id="btn-register" onclick="doRegister()">Créer mon compte</button>
+        <p class="err-msg" id="reg-err"></p>
+        <p class="info-msg" id="reg-info"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LISTE -->
+<div id="view-liste" class="view active">
+  <div class="hero">
+    <h1>Trouve ta pièce auto en Loire-Atlantique</h1>
+    <p>Particuliers · Garages · Casses · Pays de Loire</p>
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Alternateur, pare-choc...">
+      <select id="search-dept">
+        <option value="">Tout le 44/85</option>
+        <option>Nantes</option><option>Saint-Nazaire</option><option>Clisson</option><option>Ancenis</option><option>La Roche-sur-Yon</option>
+      </select>
+      <button class="btn-search" onclick="loadAnnonces()"><i class="ti ti-search"></i></button>
+    </div>
+  </div>
+  <div class="vin-banner">
+    <span style="font-size:13px;font-weight:500"><i class="ti ti-scan" style="font-size:16px;vertical-align:-2px" aria-hidden="true"></i> Scan plaque :</span>
+    <div class="vin-input-wrap">
+      <input type="text" id="vin-input" placeholder="AA-123-BB" maxlength="9">
+      <button class="btn-vin" onclick="scanPlaque()">Rechercher</button>
+    </div>
+    <div class="vin-result" id="vin-result"></div>
+  </div>
+  <div class="filters">
+    <div class="chip active" onclick="setFilter(this,'')">Toutes</div>
+    <div class="chip" onclick="setFilter(this,'Moteur')">Moteur</div>
+    <div class="chip" onclick="setFilter(this,'Carrosserie')">Carrosserie</div>
+    <div class="chip" onclick="setFilter(this,'Électronique')">Électronique</div>
+    <div class="chip" onclick="setFilter(this,'Suspension')">Suspension</div>
+    <div class="chip" onclick="setFilter(this,'Freinage')">Freinage</div>
+    <div class="chip" onclick="setFilter(this,'Transmission')">Transmission</div>
+  </div>
+  <div class="annonces">
+    <div class="annonces-header"><span id="count-label">Chargement...</span></div>
+    <div class="grid" id="grid"><div class="loading"><span class="spinner"></span>Chargement des annonces...</div></div>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<div id="view-detail" class="view">
+  <div class="detail">
+    <button class="detail-back" onclick="showView('liste')"><i class="ti ti-arrow-left"></i> Retour</button>
+    <div class="detail-img" id="d-img"></div>
+    <div class="detail-title" id="d-title"></div>
+    <div class="detail-price" id="d-price"></div>
+    <div class="tags" id="d-tags"></div>
+    <div class="section-label">Description</div>
+    <div class="desc-box" id="d-desc"></div>
+    <div class="section-label">Vendeur</div>
+    <div class="seller-card">
+      <div class="avatar" id="d-avatar"></div>
+      <div>
+        <div class="seller-name" id="d-seller"></div>
+        <div class="seller-sub" id="d-loc"></div>
+        <div class="stars-display" id="d-stars"></div>
+        <div style="font-size:12px;color:#888" id="d-avis"></div>
+      </div>
+    </div>
+    <div class="rating-form" id="rating-form">
+      <p>Laisser une note au vendeur</p>
+      <div class="stars-input" id="stars-input">
+        <button class="star-btn" onclick="setRating(1)">★</button>
+        <button class="star-btn" onclick="setRating(2)">★</button>
+        <button class="star-btn" onclick="setRating(3)">★</button>
+        <button class="star-btn" onclick="setRating(4)">★</button>
+        <button class="star-btn" onclick="setRating(5)">★</button>
+      </div>
+      <button class="btn-primary" style="font-size:13px;padding:8px" onclick="submitRating()">Envoyer la note</button>
+      <p class="info-msg" id="rating-ok" style="display:none">Merci pour votre avis !</p>
+    </div>
+    <button class="btn-contact" id="d-msg-btn"><i class="ti ti-message-circle"></i> Envoyer un message</button>
+    <button class="btn-wha" id="d-wha-btn"><i class="ti ti-brand-whatsapp"></i> Contacter sur WhatsApp</button>
+  </div>
+</div>
+
+<!-- DEPOT -->
+<div id="view-depot" class="view">
+  <div class="form-view">
+    <div class="form-title">Déposer une annonce</div>
+    <div class="form-group">
+      <label>Photos (max 5)</label>
+      <div class="upload-zone">
+        <i class="ti ti-camera-plus"></i>Ajouter des photos
+        <input type="file" id="f-photos" accept="image/*" multiple onchange="previewPhotos(this)">
+      </div>
+      <div class="photo-preview" id="photo-preview"></div>
+    </div>
+    <div class="form-group"><label>Titre</label><input type="text" id="f-titre" placeholder="Ex : Alternateur Renault Clio 3 1.5 dCi"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Catégorie</label>
+        <select id="f-cat"><option>Moteur</option><option>Carrosserie</option><option>Électronique</option><option>Suspension</option><option>Freinage</option><option>Transmission</option><option>Autre</option></select>
+      </div>
+      <div class="form-group"><label>État</label>
+        <select id="f-etat"><option>Occasion — bon état</option><option>Occasion — à vérifier</option><option>Neuf</option><option>Pour pièces</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Marque</label><input type="text" id="f-marque" placeholder="Renault, Peugeot..."></div>
+      <div class="form-group"><label>Modèle</label><input type="text" id="f-modele" placeholder="Clio, 308..."></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Année de</label><input type="number" id="f-annee1" placeholder="2005"></div>
+      <div class="form-group"><label>Année à</label><input type="number" id="f-annee2" placeholder="2012"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Prix (€)</label><input type="number" id="f-prix" placeholder="45"></div>
+      <div class="form-group"><label>Ville</label>
+        <select id="f-ville"><option>Nantes</option><option>Saint-Nazaire</option><option>Clisson</option><option>Ancenis</option><option>La Baule</option><option>Châteaubriant</option><option>La Roche-sur-Yon</option></select>
+      </div>
+    </div>
+    <div class="form-group"><label>Description</label><textarea id="f-desc" placeholder="État, kilométrage, raison de la vente..."></textarea></div>
+    <button class="btn-amber" id="btn-submit" onclick="submitAnnonce()">Publier l'annonce</button>
+    <div class="success-msg" id="success-msg"><i class="ti ti-circle-check"></i> Annonce publiée avec succès !</div>
+    <p class="err-msg" id="depot-err"></p>
+  </div>
+</div>
+
+<!-- MESSAGES -->
+<div id="view-messages" class="view">
+  <div class="msg-view">
+    <div class="msg-title">Messages</div>
+    <div class="msg-thread" id="msg-thread"><div class="loading"><span class="spinner"></span>Chargement...</div></div>
+  </div>
+</div>
+
+<!-- CHAT -->
+<div id="view-chat" class="view" style="padding:0">
+  <div class="chat-wrap">
+    <div class="chat-header">
+      <button class="chat-back" onclick="showView('messages')"><i class="ti ti-arrow-left"></i></button>
+      <div style="flex:1">
+        <div class="chat-title" id="chat-name"></div>
+        <div class="chat-sub" id="chat-piece"></div>
+      </div>
+    </div>
+    <div class="chat-messages" id="chat-msgs"></div>
+    <div class="chat-input-bar">
+      <input type="text" id="chat-input" placeholder="Votre message..." onkeydown="if(event.key==='Enter')sendMsg()">
+      <button class="btn-send" onclick="sendMsg()"><i class="ti ti-send"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- PROFIL -->
+<div id="view-profil" class="view">
+  <div class="profil-wrap">
+    <div class="profil-header">
+      <div class="profil-avatar" id="p-avatar"></div>
+      <div>
+        <div class="profil-name" id="p-name"></div>
+        <div class="profil-email" id="p-email"></div>
+      </div>
+    </div>
+    <div class="profil-stats">
+      <div class="stat-card"><div class="stat-val" id="p-nb">—</div><div class="stat-lbl">Annonces</div></div>
+      <div class="stat-card"><div class="stat-val" id="p-rating">—</div><div class="stat-lbl">Notation</div></div>
+      <div class="stat-card"><div class="stat-val" id="p-msgs">—</div><div class="stat-lbl">Messages</div></div>
+    </div>
+    <div class="section-label" style="margin-top:0;margin-bottom:10px">Mes annonces</div>
+    <div class="profil-annonces" id="profil-annonces"><div class="loading"><span class="spinner"></span></div></div>
+    <button class="btn-logout" onclick="doLogout()"><i class="ti ti-logout"></i> Se déconnecter</button>
+  </div>
+</div>
+
+<script>
+const EMOJIS={Moteur:'🔧',Carrosserie:'🚗','Électronique':'⚡',Suspension:'🔩',Freinage:'🛑',Transmission:'⚙️',Autre:'📦'};
+const PLAQUE_DB={'AA123BB':{marque:'Renault',modele:'Clio 3',annees:'2005–2012'},'BB456CC':{marque:'Peugeot',modele:'308 II',annees:'2013–2017'},'CC789DD':{marque:'Volkswagen',modele:'Golf V',annees:'2003–2009'}};
+
+let sb=null, currentUser=null, currentProfile=null;
+let activeFilter='', activeConvId=null, realtimeSub=null, myRating=0, currentDetailId=null, currentSellerId=null;
+
+/* ── SUPABASE INIT ─────────────────────────────── */
+function initSupabase(){
+  const url=document.getElementById('sb-url').value.trim();
+  const key=document.getElementById('sb-key').value.trim();
+  if(!url||!key){alert('Renseigne les deux champs.');return}
+  try{
+    sb=supabase.createClient(url,key);
+    document.getElementById('config-banner').style.display='none';
+    document.getElementById('config-ok').style.display='block';
+    checkSession();
+    loadAnnonces();
+  }catch(e){alert('Erreur : '+e.message)}
+}
+
+async function checkSession(){
+  if(!sb)return;
+  const{data:{session}}=await sb.auth.getSession();
+  if(session){await onLogin(session.user)}
+  sb.auth.onAuthStateChange((_,s)=>{if(s)onLogin(s.user);else onLogout()});
+}
+
+/* ── AUTH ──────────────────────────────────────── */
+function switchAuthTab(t){
+  document.querySelectorAll('.auth-tab').forEach((el,i)=>el.classList.toggle('active',i===(t==='login'?0:1)));
+  document.getElementById('auth-login').style.display=t==='login'?'block':'none';
+  document.getElementById('auth-register').style.display=t==='register'?'block':'none';
+}
+
+async function doLogin(){
+  if(!sb){alert('Configure Supabase d\'abord.');return}
+  const em=document.getElementById('login-email').value.trim();
+  const pw=document.getElementById('login-pw').value;
+  const btn=document.getElementById('btn-login');
+  const err=document.getElementById('login-err');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Connexion...';
+  err.style.display='none';
+  const{error}=await sb.auth.signInWithPassword({email:em,password:pw});
+  btn.disabled=false;btn.textContent='Se connecter';
+  if(error){err.textContent=error.message;err.style.display='block'}
+  else showView('liste');
+}
+
+async function doRegister(){
+  if(!sb){alert('Configure Supabase d\'abord.');return}
+  const name=document.getElementById('reg-name').value.trim();
+  const em=document.getElementById('reg-email').value.trim();
+  const pw=document.getElementById('reg-pw').value;
+  const ville=document.getElementById('reg-ville').value;
+  const btn=document.getElementById('btn-register');
+  const err=document.getElementById('reg-err');
+  const info=document.getElementById('reg-info');
+  if(!name||!em||!pw){err.textContent='Merci de remplir tous les champs.';err.style.display='block';return}
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Création...';
+  err.style.display='none';
+  const{error}=await sb.auth.signUp({email:em,password:pw,options:{data:{name,ville}}});
+  btn.disabled=false;btn.textContent='Créer mon compte';
+  if(error){err.textContent=error.message;err.style.display='block'}
+  else{info.textContent='Compte créé ! Vérifie ton email pour confirmer.';info.style.display='block'}
+}
+
+async function onLogin(user){
+  currentUser=user;
+  const{data}=await sb.from('profiles').select('*').eq('id',user.id).single();
+  currentProfile=data;
+  updateNav();
+}
+
+function onLogout(){currentUser=null;currentProfile=null;updateNav()}
+
+async function doLogout(){
+  if(sb)await sb.auth.signOut();
+  showView('liste');
+}
+
+function updateNav(){
+  const btns=document.getElementById('nav-btns');
+  if(currentUser&&currentProfile){
+    btns.innerHTML=`
+      <button class="btn-nav" onclick="showView('messages')" title="Messages"><i class="ti ti-message-circle"></i></button>
+      <button class="btn-nav primary" onclick="showView('depot')"><i class="ti ti-plus"></i> Déposer</button>
+      <div class="avatar-nav" onclick="showView('profil')" title="Mon profil">${getInitials(currentProfile.name)}</div>`;
+  }else{
+    btns.innerHTML=`
+      <button class="btn-nav" onclick="showView('auth')">Connexion</button>
+      <button class="btn-nav primary" onclick="showView('depot')"><i class="ti ti-plus"></i> Déposer</button>`;
+  }
+}
+
+/* ── UTILS ─────────────────────────────────────── */
+function getInitials(n){return(n||'?').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}
+function starsStr(r){const f=Math.round(r||0);return'★'.repeat(f)+'☆'.repeat(5-f)}
+function fmtTime(ts){const d=new Date(ts);return d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')}
+function showView(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  if(name==='messages')loadConversations();
+  if(name==='profil')loadProfil();
+  if(name==='liste')loadAnnonces();
+  window.scrollTo(0,0);
+}
+
+/* ── SCAN PLAQUE ───────────────────────────────── */
+function scanPlaque(){
+  const raw=document.getElementById('vin-input').value.replace(/[-\s]/g,'').toUpperCase();
+  const res=document.getElementById('vin-result');
+  const car=PLAQUE_DB[raw];
+  res.style.background='';res.style.color='';
+  if(car){
+    res.style.display='inline-block';
+    res.textContent='✓ '+car.marque+' '+car.modele+' '+car.annees;
+    document.getElementById('search-input').value=car.modele;
+    loadAnnonces();
+  }else{
+    res.style.display='inline-block';
+    res.style.background='#fcebeb';res.style.color='#a32d2d';
+    res.textContent='Plaque non trouvée. Essaie : AA123BB';
+  }
+}
+
+function setFilter(el,cat){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');activeFilter=cat;loadAnnonces();
+}
+
+/* ── ANNONCES ──────────────────────────────────── */
+async function loadAnnonces(){
+  const grid=document.getElementById('grid');
+  grid.innerHTML='<div class="loading"><span class="spinner"></span>Chargement...</div>';
+
+  if(!sb){
+    // Mode démo sans backend
+    renderGrid(DEMO_DATA);
+    return;
+  }
+
+  let q=sb.from('annonces').select('*, profiles(name,rating_avg,rating_nb)').eq('active',true).order('created_at',{ascending:false});
+  const search=document.getElementById('search-input').value.trim();
+  const ville=document.getElementById('search-dept').value;
+  if(activeFilter)q=q.eq('categorie',activeFilter);
+  if(ville)q=q.eq('ville',ville);
+  if(search)q=q.or(`titre.ilike.%${search}%,marque.ilike.%${search}%,modele.ilike.%${search}%`);
+
+  const{data,error}=await q;
+  if(error){grid.innerHTML='<div class="empty-state"><i class="ti ti-alert-circle"></i>Erreur de chargement</div>';return}
+
+  // Charger 1ère photo de chaque annonce
+  const ids=(data||[]).map(a=>a.id);
+  let photosMap={};
+  if(ids.length){
+    const{data:photos}=await sb.from('annonce_photos').select('annonce_id,url').in('annonce_id',ids).eq('ordre',0);
+    (photos||[]).forEach(p=>{photosMap[p.annonce_id]=p.url});
+  }
+  renderGrid(data||[],photosMap);
+}
+
+function renderGrid(list,photosMap={}){
+  const grid=document.getElementById('grid');
+  document.getElementById('count-label').textContent=list.length+' annonce'+(list.length!==1?'s':'');
+  if(!list.length){grid.innerHTML='<div class="empty-state" style="grid-column:1/-1"><i class="ti ti-search-off"></i>Aucune annonce</div>';return}
+  grid.innerHTML=list.map(a=>{
+    const photo=photosMap[a.id];
+    const cat=a.categorie||a.cat;
+    const rating=a.profiles?.rating_avg||a.rating||0;
+    const nb=a.profiles?.rating_nb||a.nbAvis||0;
+    return`<div class="card" onclick="openDetail(${a.id})">
+      <div class="card-img">${photo?`<img src="${photo}" alt="">`:(EMOJIS[cat]||'📦')}</div>
+      <div class="card-body">
+        <div class="card-title">${a.titre}</div>
+        <div class="card-meta"><i class="ti ti-map-pin" style="font-size:12px" aria-hidden="true"></i> ${a.ville} · ${a.marque||''} ${a.modele||''}</div>
+        <div style="font-size:12px;color:#e8a020;margin-bottom:5px">${starsStr(rating)} <span style="color:#888">(${nb})</span></div>
+        <div class="card-footer">
+          <div class="card-price">${a.prix} €</div>
+          <span class="badge ${a.etat==='Neuf'?'':'used'}">${a.etat==='Neuf'?'Neuf':'Occasion'}</span>
+        </div>
+      </div>
+    </div>`
+  }).join('');
+}
+
+/* ── DETAIL ────────────────────────────────────── */
+async function openDetail(id){
+  currentDetailId=id;myRating=0;
+  showView('detail');
+
+  let a=DEMO_DATA.find(x=>x.id===id);
+  if(sb){
+    const{data}=await sb.from('annonces').select('*, profiles(id,name,rating_avg,rating_nb,ville,phone)').eq('id',id).single();
+    if(data)a=data;
+  }
+  if(!a)return;
+  currentSellerId=a.profiles?.id||a.user_id||null;
+
+  const cat=a.categorie||a.cat;
+  let imgHtml=EMOJIS[cat]||'📦';
+  if(sb){
+    const{data:photos}=await sb.from('annonce_photos').select('url').eq('annonce_id',id).order('ordre');
+    if(photos&&photos.length)imgHtml=`<img src="${photos[0].url}" alt="">`;
+  }
+  document.getElementById('d-img').innerHTML=imgHtml;
+  document.getElementById('d-title').textContent=a.titre;
+  document.getElementById('d-price').textContent=a.prix+' €';
+  document.getElementById('d-desc').textContent=a.description||a.desc||'—';
+  const sellerName=a.profiles?.name||a.vendeur||'—';
+  const sellerVille=a.profiles?.ville||a.ville||'';
+  document.getElementById('d-seller').textContent=sellerName;
+  document.getElementById('d-loc').textContent=sellerVille+' · '+(a.marque||'')+' '+(a.modele||'')+' '+(a.annee_debut&&a.annee_fin?a.annee_debut+'–'+a.annee_fin:a.annees||'');
+  document.getElementById('d-avatar').textContent=getInitials(sellerName);
+  const rating=a.profiles?.rating_avg||a.rating||0;
+  const nb=a.profiles?.rating_nb||a.nbAvis||0;
+  document.getElementById('d-stars').textContent=starsStr(rating);
+  document.getElementById('d-avis').textContent=nb+' avis';
+  document.getElementById('d-tags').innerHTML=[cat,a.etat,a.marque,a.modele,a.ville].filter(Boolean).map(t=>`<span class="tag">${t}</span>`).join('');
+  document.getElementById('d-msg-btn').onclick=()=>startConversation(id,a);
+  document.getElementById('rating-ok').style.display='none';
+  renderStarInput();
+}
+
+function setRating(n){myRating=n;renderStarInput()}
+function renderStarInput(){document.querySelectorAll('.star-btn').forEach((b,i)=>b.classList.toggle('lit',i<myRating))}
+
+async function submitRating(){
+  if(!myRating){alert('Sélectionne une note.');return}
+  if(!currentUser){alert('Connecte-toi pour noter.');return}
+  if(sb){
+    const{error}=await sb.from('ratings').upsert({annonce_id:currentDetailId,reviewer_id:currentUser.id,seller_id:currentSellerId,score:myRating},{onConflict:'annonce_id,reviewer_id'});
+    if(error){alert(error.message);return}
+  }
+  document.getElementById('rating-ok').style.display='block';
+}
+
+/* ── DÉPÔT ─────────────────────────────────────── */
+function previewPhotos(input){
+  const prev=document.getElementById('photo-preview');
+  prev.innerHTML='';
+  Array.from(input.files).slice(0,5).forEach(f=>{
+    const url=URL.createObjectURL(f);
+    prev.innerHTML+=`<img src="${url}" class="photo-thumb" alt="">`;
+  });
+}
+
+async function submitAnnonce(){
+  if(!currentUser&&sb){showView('auth');return}
+  const titre=document.getElementById('f-titre').value.trim();
+  const prix=parseFloat(document.getElementById('f-prix').value)||0;
+  const err=document.getElementById('depot-err');
+  err.style.display='none';
+  if(!titre||!prix){err.textContent='Titre et prix obligatoires.';err.style.display='block';return}
+
+  const btn=document.getElementById('btn-submit');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Publication...';
+
+  if(!sb){
+    // Mode démo
+    DEMO_DATA.unshift({id:Date.now(),titre,cat:document.getElementById('f-cat').value,categorie:document.getElementById('f-cat').value,etat:document.getElementById('f-etat').value,marque:document.getElementById('f-marque').value||'—',modele:document.getElementById('f-modele').value||'—',annees:'—',prix,ville:document.getElementById('f-ville').value,desc:document.getElementById('f-desc').value,vendeur:'Moi',rating:0,nbAvis:0});
+    btn.disabled=false;btn.textContent='Publier l\'annonce';
+    document.getElementById('success-msg').style.display='block';
+    setTimeout(()=>{document.getElementById('success-msg').style.display='none';showView('liste')},2000);
+    return;
+  }
+
+  const annonce={user_id:currentUser.id,titre,description:document.getElementById('f-desc').value,categorie:document.getElementById('f-cat').value,etat:document.getElementById('f-etat').value,marque:document.getElementById('f-marque').value||null,modele:document.getElementById('f-modele').value||null,annee_debut:parseInt(document.getElementById('f-annee1').value)||null,annee_fin:parseInt(document.getElementById('f-annee2').value)||null,prix,ville:document.getElementById('f-ville').value};
+
+  const{data:newA,error}=await sb.from('annonces').insert(annonce).select().single();
+  if(error){err.textContent=error.message;err.style.display='block';btn.disabled=false;btn.textContent='Publier l\'annonce';return}
+
+  // Upload photos
+  const files=document.getElementById('f-photos').files;
+  for(let i=0;i<Math.min(files.length,5);i++){
+    const f=files[i];
+    const path=`${currentUser.id}/${newA.id}/${i}_${Date.now()}`;
+    const{data:up}=await sb.storage.from('annonces-photos').upload(path,f,{upsert:true});
+    if(up){
+      const{data:{publicUrl}}=sb.storage.from('annonces-photos').getPublicUrl(path);
+      await sb.from('annonce_photos').insert({annonce_id:newA.id,url:publicUrl,ordre:i});
+    }
+  }
+
+  btn.disabled=false;btn.textContent='Publier l\'annonce';
+  document.getElementById('success-msg').style.display='block';
+  setTimeout(()=>{document.getElementById('success-msg').style.display='none';showView('liste')},2000);
+}
+
+/* ── MESSAGES ──────────────────────────────────── */
+async function loadConversations(){
+  const thread=document.getElementById('msg-thread');
+  if(!currentUser||!sb){thread.innerHTML='<div class="empty-state"><i class="ti ti-lock"></i>Connecte-toi pour voir tes messages</div>';return}
+  thread.innerHTML='<div class="loading"><span class="spinner"></span></div>';
+  const{data,error}=await sb.from('conversations').select('*, annonces(titre), acheteur:profiles!acheteur_id(name), vendeur:profiles!vendeur_id(name), messages(content,created_at,sender_id)').or(`acheteur_id.eq.${currentUser.id},vendeur_id.eq.${currentUser.id}`).order('created_at',{ascending:false});
+  if(error||!data?.length){thread.innerHTML='<div class="empty-state"><i class="ti ti-message-off"></i>Aucune conversation</div>';return}
+  thread.innerHTML=data.map(c=>{
+    const isAcheteur=c.acheteur_id===currentUser.id;
+    const other=isAcheteur?c.vendeur?.name:c.acheteur?.name;
+    const lastMsg=c.messages?.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at))[0];
+    const unread=lastMsg&&lastMsg.sender_id!==currentUser.id;
+    return`<div class="msg-item ${unread?'msg-unread':''}" onclick="openChat(${c.id},'${other||'—'}','${c.annonces?.titre||''}')">
+      <div class="msg-avatar">${getInitials(other)}</div>
+      <div class="msg-content">
+        <div class="msg-name">${other||'—'}</div>
+        <div class="msg-preview">${c.annonces?.titre||''} — ${lastMsg?.content||'Nouvelle conversation'}</div>
+      </div>
+      <div class="msg-time">${lastMsg?fmtTime(lastMsg.created_at):''}</div>
+    </div>`
+  }).join('');
+}
+
+async function startConversation(annonceId,annonce){
+  if(!currentUser){showView('auth');return}
+  if(!sb){openChatDemo(annonce.vendeur||'Vendeur',annonce.titre);return}
+  const sellerId=annonce.profiles?.id||annonce.user_id;
+  if(sellerId===currentUser.id){alert('C\'est ton propre annonce.');return}
+  let{data:conv}=await sb.from('conversations').select('id').eq('annonce_id',annonceId).eq('acheteur_id',currentUser.id).single();
+  if(!conv){
+    const{data:newC}=await sb.from('conversations').insert({annonce_id:annonceId,acheteur_id:currentUser.id,vendeur_id:sellerId}).select().single();
+    conv=newC;
+  }
+  openChat(conv.id,annonce.profiles?.name||annonce.vendeur,annonce.titre);
+}
+
+async function openChat(convId,name,piece){
+  activeConvId=convId;
+  document.getElementById('chat-name').textContent=name;
+  document.getElementById('chat-piece').textContent=piece;
+  showView('chat');
+  await loadMessages();
+  subscribeMessages();
+}
+
+async function loadMessages(){
+  const box=document.getElementById('chat-msgs');
+  if(!sb){box.innerHTML='<div class="loading">Mode démo — backend non connecté</div>';return}
+  const{data}=await sb.from('messages').select('*').eq('conversation_id',activeConvId).order('created_at');
+  renderMessages(data||[]);
+}
+
+function renderMessages(msgs){
+  const box=document.getElementById('chat-msgs');
+  box.innerHTML=msgs.map(m=>`
+    <div>
+      <div class="bubble ${m.sender_id===currentUser?.id?'me':'them'}">${m.content}</div>
+      <div class="bubble-time" style="text-align:${m.sender_id===currentUser?.id?'right':'left'}">${fmtTime(m.created_at)}</div>
+    </div>`).join('');
+  box.scrollTop=box.scrollHeight;
+}
+
+function subscribeMessages(){
+  if(realtimeSub)sb.removeChannel(realtimeSub);
+  if(!sb)return;
+  realtimeSub=sb.channel('messages-'+activeConvId)
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:`conversation_id=eq.${activeConvId}`},()=>loadMessages())
+    .subscribe();
+}
+
+async function sendMsg(){
+  const inp=document.getElementById('chat-input');
+  const txt=inp.value.trim();
+  if(!txt||!currentUser)return;
+  inp.value='';
+  if(!sb)return;
+  await sb.from('messages').insert({conversation_id:activeConvId,sender_id:currentUser.id,content:txt});
+}
+
+/* ── PROFIL ─────────────────────────────────────── */
+async function loadProfil(){
+  if(!currentUser){showView('auth');return}
+  const p=currentProfile;
+  document.getElementById('p-avatar').textContent=getInitials(p?.name);
+  document.getElementById('p-name').textContent=p?.name||'—';
+  document.getElementById('p-email').textContent=currentUser.email+' · '+(p?.ville||'');
+  document.getElementById('p-rating').textContent=p?.rating_avg?(+p.rating_avg).toFixed(1)+'★':'—';
+  if(!sb){document.getElementById('profil-annonces').innerHTML='<div class="empty-state"><i class="ti ti-package-off"></i>Backend non connecté</div>';return}
+  const{data:ann}=await sb.from('annonces').select('*').eq('user_id',currentUser.id).eq('active',true).order('created_at',{ascending:false});
+  document.getElementById('p-nb').textContent=ann?.length||0;
+  const{data:msgs}=await sb.from('conversations').select('id').or(`acheteur_id.eq.${currentUser.id},vendeur_id.eq.${currentUser.id}`);
+  document.getElementById('p-msgs').textContent=msgs?.length||0;
+  document.getElementById('profil-annonces').innerHTML=(ann&&ann.length)?ann.map(a=>`
+    <div class="pai" onclick="openDetail(${a.id})">
+      <div><p>${a.titre}</p><span>${a.ville} · ${a.categorie}</span></div>
+      <div class="pai-price">${a.prix} €</div>
+    </div>`).join(''):'<div class="empty-state"><i class="ti ti-package-off"></i>Aucune annonce</div>';
+}
+
+// Mode démo sans backend
+function openChatDemo(name,piece){
+  document.getElementById('chat-name').textContent=name;
+  document.getElementById('chat-piece').textContent=piece;
+  document.getElementById('chat-msgs').innerHTML='<div class="empty-state"><i class="ti ti-plug-off"></i>Configure Supabase pour la messagerie en temps réel</div>';
+  showView('chat');
+}
+
+const DEMO_DATA=[
+  {id:1,titre:'Alternateur Renault Clio 3 1.5 dCi',cat:'Électronique',categorie:'Électronique',etat:'Occasion — bon état',marque:'Renault',modele:'Clio 3',annees:'2005–2012',prix:55,ville:'Nantes',desc:'Alternateur démonté sur Clio 3 phase 2, 110 000 km. Testé fonctionnel.',vendeur:'Marc D.',rating:4.2,nbAvis:8},
+  {id:2,titre:'Pare-choc avant Peugeot 308 II',cat:'Carrosserie',categorie:'Carrosserie',etat:'Occasion — bon état',marque:'Peugeot',modele:'308 II',annees:'2013–2017',prix:85,ville:'Saint-Nazaire',desc:'Pare-choc avant complet, gris métallisé.',vendeur:'Julie R.',rating:4.8,nbAvis:15},
+  {id:3,titre:'Boîte de vitesse VW Golf V 1.9 TDI',cat:'Transmission',categorie:'Transmission',etat:'Occasion — bon état',marque:'Volkswagen',modele:'Golf V',annees:'2003–2009',prix:220,ville:'Clisson',desc:'BV 5 rapports, 145 000 km, passage parfait.',vendeur:'Thomas B.',rating:5.0,nbAvis:3},
+  {id:4,titre:'Étriers de frein Citroën C3 arrière',cat:'Freinage',categorie:'Freinage',etat:'Neuf',marque:'Citroën',modele:'C3',annees:'2010–2016',prix:40,ville:'Nantes',desc:'Paire d\'étriers neufs jamais montés.',vendeur:'Sophie L.',rating:4.5,nbAvis:6},
+  {id:5,titre:'Radiateur moteur Renault Mégane 2',cat:'Moteur',categorie:'Moteur',etat:'Occasion — à vérifier',marque:'Renault',modele:'Mégane 2',annees:'2002–2008',prix:30,ville:'Ancenis',desc:'Pas de fuite visible. Vendu en l\'état.',vendeur:'Franck M.',rating:3.8,nbAvis:4},
+  {id:6,titre:'Kit embrayage complet Peugeot 307',cat:'Transmission',categorie:'Transmission',etat:'Neuf',marque:'Peugeot',modele:'307',annees:'2001–2008',prix:90,ville:'Saint-Nazaire',desc:'Kit LuK neuf, projet non réalisé.',vendeur:'Carole V.',rating:4.9,nbAvis:20},
+];
+
+loadAnnonces();
+</script>
+</body>
+</html>
