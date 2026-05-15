@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://pieceauto44.vercel.app/sitemap.xml
+Sitemap: https://mecaz.fr/sitemap.xml
