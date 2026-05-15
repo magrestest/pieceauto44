@@ -277,23 +277,87 @@ textarea{resize:vertical;min-height:80px}
 
 <!-- LISTE -->
 <div id="view-liste" class="view active">
+  <!-- HERO MARKETING -->
   <div class="hero">
     <div class="hero-badge"><i class="ti ti-map-pin" aria-hidden="true"></i><span>Loire-Atlantique · Pays de Loire</span></div>
-    <h1>La marketplace de pièces auto<br>entre particuliers</h1>
-    <p>Particuliers · Garages · Casses</p>
+    <h1>La pièce qu'il te faut.<br><span style="color:#e8a020">Près de chez toi.</span></h1>
+    <p>Achète et vends des pièces auto entre particuliers en Loire-Atlantique. Rapide, sécurisé, local.</p>
     <div class="search-wrap">
       <input type="text" id="search-input" placeholder="Alternateur, pare-choc, moteur...">
       <select id="search-dept">
         <option value="">Toutes villes</option>
         <option>Nantes</option><option>Saint-Nazaire</option><option>Clisson</option><option>Ancenis</option><option>La Roche-sur-Yon</option>
       </select>
-      <button class="btn-search" onclick="loadAnnonces()"><i class="ti ti-search" aria-hidden="true"></i></button>
+      <button class="btn-search" onclick="loadAnnonces()"><i class="ti ti-search" aria-hidden="true"></i> Rechercher</button>
     </div>
     <div class="vin-row">
       <span><i class="ti ti-scan" aria-hidden="true"></i> Scan plaque :</span>
       <input type="text" id="vin-input" placeholder="AA-123-BB" maxlength="9">
       <button class="btn-vin" onclick="scanPlaque()">Identifier</button>
       <div class="vin-result" id="vin-result"></div>
+    </div>
+
+    <!-- STATS HERO -->
+    <div style="display:flex;gap:2rem;justify-content:center;margin-top:2.5rem;flex-wrap:wrap;padding-top:2rem;border-top:0.5px solid rgba(255,255,255,0.08)">
+      <div style="text-align:center">
+        <div style="color:#fff;font-size:22px;font-weight:500">100%</div>
+        <div style="color:rgba(255,255,255,0.35);font-size:12px;margin-top:2px">Gratuit à déposer</div>
+      </div>
+      <div style="width:0.5px;background:rgba(255,255,255,0.1)"></div>
+      <div style="text-align:center">
+        <div style="color:#fff;font-size:22px;font-weight:500">8%</div>
+        <div style="color:rgba(255,255,255,0.35);font-size:12px;margin-top:2px">Commission seulement</div>
+      </div>
+      <div style="width:0.5px;background:rgba(255,255,255,0.1)"></div>
+      <div style="text-align:center">
+        <div style="color:#fff;font-size:22px;font-weight:500">14j</div>
+        <div style="color:rgba(255,255,255,0.35);font-size:12px;margin-top:2px">Droit de rétractation</div>
+      </div>
+      <div style="width:0.5px;background:rgba(255,255,255,0.1)"></div>
+      <div style="text-align:center">
+        <div style="color:#fff;font-size:22px;font-weight:500">44/85</div>
+        <div style="color:rgba(255,255,255,0.35);font-size:12px;margin-top:2px">Zone couverte</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POURQUOI MECAZ -->
+  <div style="padding:3rem 1.5rem;background:#fff;border-top:0.5px solid #e8e8e8;border-bottom:0.5px solid #e8e8e8">
+    <div style="max-width:800px;margin:0 auto">
+      <div style="font-size:20px;font-weight:500;letter-spacing:-0.3px;margin-bottom:4px">Pourquoi Mecaz ?</div>
+      <div style="font-size:13px;color:#aaa;margin-bottom:1.75rem">Ce qui nous rend différents</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:12px">
+        <div style="padding:1.25rem;background:#f9f9f7;border-radius:12px;border:0.5px solid #e8e8e8">
+          <i class="ti ti-map-pin" style="font-size:24px;color:#e8a020;margin-bottom:10px;display:block" aria-hidden="true"></i>
+          <div style="font-size:14px;font-weight:500;margin-bottom:4px">100% local</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.6">Uniquement Loire-Atlantique et Pays de Loire</div>
+        </div>
+        <div style="padding:1.25rem;background:#f9f9f7;border-radius:12px;border:0.5px solid #e8e8e8">
+          <i class="ti ti-shield-check" style="font-size:24px;color:#3b6d11;margin-bottom:10px;display:block" aria-hidden="true"></i>
+          <div style="font-size:14px;font-weight:500;margin-bottom:4px">Paiement sécurisé</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.6">Stripe protège chaque transaction</div>
+        </div>
+        <div style="padding:1.25rem;background:#f9f9f7;border-radius:12px;border:0.5px solid #e8e8e8">
+          <i class="ti ti-scan" style="font-size:24px;color:#1a1a1a;margin-bottom:10px;display:block" aria-hidden="true"></i>
+          <div style="font-size:14px;font-weight:500;margin-bottom:4px">Scan plaque</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.6">Identifie ton véhicule en un scan</div>
+        </div>
+        <div style="padding:1.25rem;background:#f9f9f7;border-radius:12px;border:0.5px solid #e8e8e8">
+          <i class="ti ti-tag" style="font-size:24px;color:#1a1a1a;margin-bottom:10px;display:block" aria-hidden="true"></i>
+          <div style="font-size:14px;font-weight:500;margin-bottom:4px">Dépôt gratuit</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.6">8% seulement au moment de la vente</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA VENDRE -->
+  <div style="background:#0f0f0f;padding:3.5rem 1.5rem;text-align:center">
+    <div style="font-size:24px;font-weight:500;color:#fff;letter-spacing:-0.5px;margin-bottom:8px">Prêt à vendre ta pièce ?</div>
+    <div style="font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:2rem">Gratuit · 2 minutes · Visible par tout le 44/85</div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button onclick="showView('depot')" style="background:#e8a020;color:#0f0f0f;font-size:15px;font-weight:500;padding:12px 28px;border-radius:8px;cursor:pointer;border:none">Déposer une annonce</button>
+      <a href="/comment-ca-marche.html" style="background:rgba(255,255,255,0.08);color:#fff;font-size:15px;padding:12px 28px;border-radius:8px;cursor:pointer;border:0.5px solid rgba(255,255,255,0.2);text-decoration:none;display:inline-block">Comment ça marche</a>
     </div>
   </div>
 
