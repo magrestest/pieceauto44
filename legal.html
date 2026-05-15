@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mentions légales & CGV — Mecaz</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f5f5f0;color:#1a1a1a}
+nav{background:#0f0f0f;color:#fff;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:200}
+.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none;color:#fff}
+.nav-logo-icon{width:32px;height:32px;background:#e8a020;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.nav-logo-icon i{color:#0f0f0f;font-size:18px}
+.nav-logo-text{font-size:18px;font-weight:500;letter-spacing:-0.3px}
+.nav-logo-text span{color:#e8a020}
+.wrap{max-width:720px;margin:0 auto;padding:2.5rem 1.5rem}
+.tabs{display:flex;gap:8px;margin-bottom:2rem;background:#fff;border-radius:12px;padding:6px;border:0.5px solid #e8e8e8}
+.tab{flex:1;padding:9px;text-align:center;font-size:14px;border-radius:8px;cursor:pointer;color:#888;font-weight:400}
+.tab.active{background:#0f0f0f;color:#fff;font-weight:500}
+.section{display:none}.section.active{display:block}
+h1{font-size:24px;font-weight:500;margin-bottom:.5rem;letter-spacing:-0.3px}
+.subtitle{font-size:14px;color:#aaa;margin-bottom:2rem}
+h2{font-size:16px;font-weight:500;margin:1.75rem 0 .75rem;color:#1a1a1a}
+h3{font-size:14px;font-weight:500;margin:1.25rem 0 .5rem;color:#444}
+p{font-size:14px;line-height:1.75;color:#555;margin-bottom:.75rem}
+ul{font-size:14px;line-height:1.75;color:#555;margin-bottom:.75rem;padding-left:1.25rem}
+ul li{margin-bottom:.25rem}
+.card{background:#fff;border-radius:12px;border:0.5px solid #e8e8e8;padding:1.5rem;margin-bottom:1rem}
+.highlight{background:#fff8ee;border:0.5px solid #f0d090;border-radius:10px;padding:1rem 1.25rem;margin:1rem 0;font-size:14px;color:#854f0b;line-height:1.6}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:#888;cursor:pointer;margin-bottom:1.5rem;background:none;border:none;text-decoration:none}
+.back-btn:hover{color:#1a1a1a}
+footer{text-align:center;padding:2rem;font-size:13px;color:#bbb}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">
+    <div class="nav-logo-icon"><i class="ti ti-car" aria-hidden="true"></i></div>
+    <span class="nav-logo-text">Me<span>caz</span></span>
+  </a>
+</nav>
+
+<div class="wrap">
+  <a class="back-btn" href="/"><i class="ti ti-arrow-left" aria-hidden="true"></i> Retour à l'accueil</a>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('mentions')">Mentions légales</div>
+    <div class="tab" onclick="switchTab('cgv')">CGV</div>
+    <div class="tab" onclick="switchTab('confidentialite')">Confidentialité</div>
+  </div>
+
+  <!-- MENTIONS LÉGALES -->
+  <div id="section-mentions" class="section active">
+    <h1>Mentions légales</h1>
+    <p class="subtitle">Conformément à la loi n°2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique</p>
+
+    <div class="card">
+      <h2>Éditeur du site</h2>
+      <p><strong>Dénomination :</strong> Mecaz</p>
+      <p><strong>Statut :</strong> Exploitant individuel en cours de structuration juridique</p>
+      <p><strong>Département :</strong> Loire-Atlantique (44), France</p>
+      <p><strong>Contact :</strong> <a href="mailto:contact@mecaz.fr" style="color:#e8a020">contact@mecaz.fr</a></p>
+    </div>
+
+    <div class="card">
+      <h2>Hébergement</h2>
+      <p><strong>Vercel Inc.</strong><br>440 N Barranca Ave #4133, Covina, CA 91723, États-Unis<br><a href="https://vercel.com" style="color:#e8a020">vercel.com</a></p>
+      <p style="margin-top:.75rem"><strong>Supabase Inc.</strong> (base de données)<br><a href="https://supabase.com" style="color:#e8a020">supabase.com</a></p>
+    </div>
+
+    <div class="card">
+      <h2>Propriété intellectuelle</h2>
+      <p>Le nom "Mecaz", le logo, la charte graphique et l'ensemble des contenus présents sur le site sont la propriété exclusive de l'éditeur. Toute reproduction, même partielle, est interdite sans autorisation préalable.</p>
+      <p>Les annonces publiées par les utilisateurs restent la propriété de leurs auteurs. En publiant une annonce, l'utilisateur accorde à Mecaz une licence non exclusive d'affichage sur la plateforme.</p>
+    </div>
+
+    <div class="card">
+      <h2>Responsabilité</h2>
+      <p>Mecaz est une plateforme de mise en relation entre particuliers. L'éditeur ne peut être tenu responsable des informations publiées par les utilisateurs, ni des transactions effectuées entre eux.</p>
+      <p>Mecaz s'efforce de maintenir le site accessible en permanence mais ne peut garantir une disponibilité continue du service.</p>
+    </div>
+  </div>
+
+  <!-- CGV -->
+  <div id="section-cgv" class="section">
+    <h1>Conditions Générales de Vente</h1>
+    <p class="subtitle">Dernière mise à jour : mai 2025</p>
+
+    <div class="highlight">
+      ⚠️ Mecaz est une place de marché entre particuliers. Les transactions sont conclues directement entre acheteurs et vendeurs. Mecaz intervient uniquement comme intermédiaire technique et perçoit une commission de service.
+    </div>
+
+    <div class="card">
+      <h2>1. Objet</h2>
+      <p>Les présentes CGV régissent l'utilisation de la plateforme Mecaz (<strong>pieceauto44.vercel.app</strong>), marketplace dédiée à la vente de pièces automobiles entre particuliers en Loire-Atlantique et Pays de Loire.</p>
+    </div>
+
+    <div class="card">
+      <h2>2. Inscription et compte utilisateur</h2>
+      <p>L'utilisation complète de Mecaz nécessite la création d'un compte. L'utilisateur s'engage à fournir des informations exactes et à maintenir la confidentialité de ses identifiants.</p>
+      <p>Mecaz se réserve le droit de suspendre tout compte en cas de comportement frauduleux ou contraire aux présentes CGV.</p>
+    </div>
+
+    <div class="card">
+      <h2>3. Dépôt d'annonces</h2>
+      <h3>3.1 Contenu autorisé</h3>
+      <p>Seules les pièces automobiles légales, dont le vendeur est propriétaire, peuvent être mises en vente. Sont notamment interdits :</p>
+      <ul>
+        <li>Les pièces volées ou d'origine illicite</li>
+        <li>Les pièces dangereuses ou non conformes aux normes en vigueur</li>
+        <li>Tout contenu sans rapport avec la mécanique automobile</li>
+      </ul>
+      <h3>3.2 Responsabilité du vendeur</h3>
+      <p>Le vendeur est seul responsable de l'exactitude des informations de son annonce (description, compatibilité, état, prix). Toute fausse déclaration engage sa responsabilité.</p>
+    </div>
+
+    <div class="card">
+      <h2>4. Commission et paiement</h2>
+      <p>Mecaz perçoit une <strong>commission de 8%</strong> sur chaque transaction réalisée via la plateforme. Cette commission est prélevée automatiquement au moment du paiement.</p>
+      <p>Les paiements sont traités par <strong>Stripe</strong>, opérateur de paiement sécurisé. Mecaz ne stocke aucune donnée bancaire.</p>
+      <p>Le vendeur recevra le montant de la vente diminué de la commission par virement bancaire dans un délai de <strong>3 à 5 jours ouvrés</strong> après confirmation de la transaction.</p>
+    </div>
+
+    <div class="card">
+      <h2>5. Droit de rétractation</h2>
+      <p>Conformément à l'article L221-18 du Code de la consommation, l'acheteur dispose d'un délai de <strong>14 jours</strong> à compter de la réception de la pièce pour exercer son droit de rétractation, sans avoir à justifier de motifs.</p>
+      <p>Pour exercer ce droit, l'acheteur doit contacter Mecaz à l'adresse <a href="mailto:contact@mecaz.fr" style="color:#e8a020">contact@mecaz.fr</a>. Les frais de retour sont à la charge de l'acheteur.</p>
+    </div>
+
+    <div class="card">
+      <h2>6. Litiges</h2>
+      <p>En cas de litige entre acheteur et vendeur, Mecaz peut intervenir comme médiateur mais n'est pas tenu de prendre position. Les parties s'engagent à rechercher une solution amiable avant tout recours judiciaire.</p>
+      <p>En cas d'échec de la médiation, le litige sera soumis aux tribunaux compétents de <strong>Nantes (44)</strong>.</p>
+    </div>
+
+    <div class="card">
+      <h2>7. Modification des CGV</h2>
+      <p>Mecaz se réserve le droit de modifier les présentes CGV à tout moment. Les utilisateurs seront informés de tout changement significatif par email ou notification sur la plateforme.</p>
+    </div>
+  </div>
+
+  <!-- CONFIDENTIALITÉ -->
+  <div id="section-confidentialite" class="section">
+    <h1>Politique de confidentialité</h1>
+    <p class="subtitle">Conformément au RGPD (Règlement Général sur la Protection des Données)</p>
+
+    <div class="card">
+      <h2>Données collectées</h2>
+      <p>Mecaz collecte les données suivantes :</p>
+      <ul>
+        <li><strong>Compte :</strong> nom, email, ville</li>
+        <li><strong>Annonces :</strong> titre, description, photos, prix, localisation</li>
+        <li><strong>Messages :</strong> contenu des conversations entre utilisateurs</li>
+        <li><strong>Transactions :</strong> montants, dates (via Stripe — aucune donnée bancaire)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Utilisation des données</h2>
+      <p>Les données collectées sont utilisées exclusivement pour :</p>
+      <ul>
+        <li>Faire fonctionner la plateforme et ses services</li>
+        <li>Permettre les transactions entre utilisateurs</li>
+        <li>Envoyer des notifications liées à l'activité du compte</li>
+        <li>Améliorer l'expérience utilisateur</li>
+      </ul>
+      <p>Mecaz ne vend ni ne loue aucune donnée personnelle à des tiers.</p>
+    </div>
+
+    <div class="card">
+      <h2>Stockage et sécurité</h2>
+      <p>Les données sont stockées sur les serveurs de <strong>Supabase</strong> (Union Européenne). Les communications sont chiffrées via HTTPS. Les mots de passe sont hashés et ne sont jamais stockés en clair.</p>
+    </div>
+
+    <div class="card">
+      <h2>Vos droits</h2>
+      <p>Conformément au RGPD, vous disposez des droits suivants :</p>
+      <ul>
+        <li><strong>Droit d'accès :</strong> obtenir une copie de vos données</li>
+        <li><strong>Droit de rectification :</strong> corriger vos données</li>
+        <li><strong>Droit à l'effacement :</strong> supprimer votre compte et vos données</li>
+        <li><strong>Droit à la portabilité :</strong> exporter vos données</li>
+      </ul>
+      <p>Pour exercer ces droits : <a href="mailto:contact@mecaz.fr" style="color:#e8a020">contact@mecaz.fr</a></p>
+    </div>
+
+    <div class="card">
+      <h2>Cookies</h2>
+      <p>Mecaz utilise uniquement des cookies techniques nécessaires au bon fonctionnement du service (session utilisateur). Aucun cookie publicitaire ou de tracking tiers n'est utilisé.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>© 2025 Mecaz · Loire-Atlantique · <a href="mailto:contact@mecaz.fr" style="color:#bbb">contact@mecaz.fr</a></footer>
+
+<script>
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['mentions','cgv','confidentialite'][i]===name));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('section-'+name).classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
