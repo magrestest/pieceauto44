@@ -228,6 +228,61 @@ textarea{resize:vertical;min-height:80px}
 .loading{text-align:center;padding:2.5rem;color:#bbb;font-size:14px}
 .empty-state{text-align:center;padding:3rem 1rem;color:#bbb}
 .empty-state i{font-size:40px;display:block;margin-bottom:10px;opacity:.5}
+
+/* MOBILE */
+@media(max-width:600px){
+  nav{padding:0 1rem}
+  .nav-logo-text{font-size:16px}
+  .btn-nav:not(.primary){display:none}
+  .btn-nav.primary{padding:6px 12px;font-size:12px}
+  .avatar-nav{width:28px;height:28px;font-size:11px}
+
+  .hero{padding:2rem 1rem 1.75rem}
+  .hero h1{font-size:22px}
+  .hero p{font-size:13px}
+  .search-wrap{flex-direction:column;gap:6px;padding:6px}
+  .search-wrap input,.search-wrap select{width:100%;min-width:0}
+  .search-wrap select{padding:9px 10px}
+  .btn-search{width:100%;padding:10px;justify-content:center}
+  .vin-row{flex-wrap:wrap;gap:6px}
+  .vin-row input{width:120px}
+
+  .hero .stats-row{gap:1rem}
+  .hero .stats-row > div[style*="width:0.5px"]{display:none}
+
+  .filters{padding:10px .75rem;gap:6px}
+  .chip{padding:5px 12px;font-size:12px}
+
+  .annonces{padding:.75rem 1rem}
+  .grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .card-img{height:110px;font-size:28px}
+  .card-body{padding:8px 10px}
+  .card-title{font-size:12px}
+  .card-meta{font-size:11px}
+  .card-price{font-size:15px}
+
+  .detail{padding:1rem}
+  .detail-img{height:180px;font-size:48px}
+  .detail-title{font-size:18px}
+  .detail-price{font-size:22px}
+
+  .form-view{padding:1.25rem 1rem}
+  .form-row{grid-template-columns:1fr}
+
+  .chat-wrap{height:calc(100vh - 52px)}
+
+  .profil-stats{grid-template-columns:repeat(3,1fr);gap:8px}
+  .stat-val{font-size:18px}
+
+  .msg-view{padding:1rem}
+
+  .auth-box{padding:1.5rem 1rem}
+}
+
+@media(max-width:400px){
+  .grid{grid-template-columns:1fr}
+  .hero h1{font-size:20px}
+}
 </style>
 </head>
 <body>
