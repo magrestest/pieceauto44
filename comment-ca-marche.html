@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comment ça marche — Mecaz</title>
+<meta name="description" content="Découvrez comment fonctionne Mecaz, la marketplace de pièces auto entre particuliers en Loire-Atlantique. Achetez et vendez en toute sécurité.">
+<link rel="canonical" href="https://mecaz.fr/comment-ca-marche.html">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f5f5f0;color:#1a1a1a}
+nav{background:#0f0f0f;color:#fff;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:200}
+.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none;color:#fff}
+.nav-logo-icon{width:32px;height:32px;background:#e8a020;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.nav-logo-icon i{color:#0f0f0f;font-size:18px}
+.nav-logo-text{font-size:18px;font-weight:500;letter-spacing:-0.3px}
+.nav-logo-text span{color:#e8a020}
+.btn-cta{background:#e8a020;border:none;color:#0f0f0f;font-weight:500;padding:7px 16px;border-radius:6px;cursor:pointer;font-size:13px;text-decoration:none}
+
+/* HERO */
+.hero{background:#0f0f0f;padding:4rem 1.5rem;text-align:center;border-bottom:0.5px solid rgba(255,255,255,0.08)}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(232,160,32,0.12);border:0.5px solid rgba(232,160,32,0.3);border-radius:20px;padding:4px 14px;margin-bottom:1rem}
+.hero-badge span{color:#e8a020;font-size:12px;font-weight:500}
+.hero h1{color:#fff;font-size:30px;font-weight:500;margin-bottom:12px;letter-spacing:-0.5px;line-height:1.3}
+.hero p{color:rgba(255,255,255,0.45);font-size:15px;max-width:480px;margin:0 auto 2rem;line-height:1.7}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn-primary-hero{background:#e8a020;color:#0f0f0f;border:none;padding:12px 24px;border-radius:8px;font-size:15px;font-weight:500;cursor:pointer;text-decoration:none}
+.btn-secondary-hero{background:rgba(255,255,255,0.08);color:#fff;border:0.5px solid rgba(255,255,255,0.2);padding:12px 24px;border-radius:8px;font-size:15px;cursor:pointer;text-decoration:none}
+
+/* STATS */
+.stats{background:#fff;border-bottom:0.5px solid #e8e8e8;padding:1.5rem;display:flex;justify-content:center;gap:3rem;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-val{font-size:26px;font-weight:500;color:#e8a020}
+.stat-lbl{font-size:13px;color:#aaa;margin-top:2px}
+
+/* SECTIONS */
+.section{padding:4rem 1.5rem;max-width:800px;margin:0 auto}
+.section-title{font-size:22px;font-weight:500;letter-spacing:-0.3px;margin-bottom:4px;text-align:center}
+.section-sub{font-size:14px;color:#aaa;text-align:center;margin-bottom:2.5rem}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:1rem}
+.step{display:flex;gap:16px;align-items:flex-start;background:#fff;border-radius:12px;border:0.5px solid #e8e8e8;padding:1.25rem}
+.step-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;flex-shrink:0}
+.step-num.orange{background:#fff8ee;color:#e8a020;border:0.5px solid rgba(232,160,32,0.3)}
+.step-num.dark{background:#f5f5f2;color:#555;border:0.5px solid #e8e8e8}
+.step-content h3{font-size:15px;font-weight:500;margin-bottom:4px}
+.step-content p{font-size:13px;color:#888;line-height:1.6}
+
+/* TABS */
+.tabs-wrap{background:#fff;border-radius:12px;border:0.5px solid #e8e8e8;overflow:hidden;margin-bottom:2rem}
+.tabs-header{display:flex;border-bottom:0.5px solid #e8e8e8}
+.tab-btn{flex:1;padding:14px;text-align:center;font-size:14px;cursor:pointer;color:#888;border:none;background:none;border-bottom:2px solid transparent}
+.tab-btn.active{color:#1a1a1a;font-weight:500;border-bottom-color:#e8a020}
+.tab-content{display:none;padding:1.5rem}
+.tab-content.active{display:block}
+
+/* GARANTIES */
+.garanties{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:2rem}
+.garantie{background:#fff;border-radius:12px;border:0.5px solid #e8e8e8;padding:1.25rem;text-align:center}
+.garantie i{font-size:28px;margin-bottom:10px;display:block}
+.garantie h3{font-size:14px;font-weight:500;margin-bottom:4px}
+.garantie p{font-size:12px;color:#aaa;line-height:1.5}
+
+/* FAQ */
+.faq{display:flex;flex-direction:column;gap:8px}
+.faq-item{background:#fff;border-radius:10px;border:0.5px solid #e8e8e8;overflow:hidden}
+.faq-q{padding:14px 16px;font-size:14px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:#1a1a1a}
+.faq-q i{font-size:16px;color:#aaa;transition:transform .2s;flex-shrink:0}
+.faq-a{display:none;padding:0 16px 14px;font-size:13px;color:#888;line-height:1.7}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .faq-q i{transform:rotate(180deg)}
+
+/* CTA FINAL */
+.cta-final{background:#0f0f0f;padding:4rem 1.5rem;text-align:center}
+.cta-final h2{color:#fff;font-size:24px;font-weight:500;margin-bottom:8px;letter-spacing:-0.3px}
+.cta-final p{color:rgba(255,255,255,0.45);font-size:14px;margin-bottom:1.75rem}
+
+/* FOOTER */
+footer{background:#0f0f0f;border-top:0.5px solid rgba(255,255,255,0.08);padding:1.5rem;text-align:center;font-size:13px;color:rgba(255,255,255,0.3)}
+footer a{color:rgba(255,255,255,0.4);text-decoration:none}
+footer a:hover{color:#fff}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">
+    <div class="nav-logo-icon"><i class="ti ti-car" aria-hidden="true"></i></div>
+    <span class="nav-logo-text">Me<span>caz</span></span>
+  </a>
+  <a class="btn-cta" href="/">Voir les annonces</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge"><span>Simple · Sécurisé · Local</span></div>
+  <h1>La façon la plus simple<br>d'acheter et vendre des pièces auto</h1>
+  <p>Mecaz met en relation particuliers, garagistes et casses automobiles en Loire-Atlantique pour des transactions rapides et sécurisées.</p>
+  <div class="hero-btns">
+    <a class="btn-primary-hero" href="/">Trouver une pièce</a>
+    <a class="btn-secondary-hero" href="/">Vendre une pièce</a>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-val">8%</div><div class="stat-lbl">Commission seulement</div></div>
+  <div class="stat"><div class="stat-val">44/85</div><div class="stat-lbl">Loire-Atlantique & Vendée</div></div>
+  <div class="stat"><div class="stat-val">100%</div><div class="stat-lbl">Paiement sécurisé</div></div>
+  <div class="stat"><div class="stat-val">14j</div><div class="stat-lbl">Droit de rétractation</div></div>
+</div>
+
+<!-- ACHETEUR / VENDEUR -->
+<div class="section">
+  <div class="tabs-wrap">
+    <div class="tabs-header">
+      <button class="tab-btn active" onclick="switchTab('acheteur')"><i class="ti ti-shopping-cart" aria-hidden="true"></i> J'achète une pièce</button>
+      <button class="tab-btn" onclick="switchTab('vendeur')"><i class="ti ti-tag" aria-hidden="true"></i> Je vends une pièce</button>
+    </div>
+
+    <div id="tab-acheteur" class="tab-content active">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num orange">1</div>
+          <div class="step-content">
+            <h3>Recherche ta pièce</h3>
+            <p>Utilise la barre de recherche ou entre ta plaque d'immatriculation pour trouver les pièces compatibles avec ton véhicule. Filtre par catégorie, ville ou état.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num orange">2</div>
+          <div class="step-content">
+            <h3>Contacte le vendeur</h3>
+            <p>Envoie un message directement au vendeur pour poser tes questions, négocier le prix ou organiser un rendez-vous pour voir la pièce.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num orange">3</div>
+          <div class="step-content">
+            <h3>Paye en sécurité</h3>
+            <p>Le paiement est traité par Stripe, le leader mondial du paiement en ligne. Tes données bancaires ne sont jamais stockées sur Mecaz.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num orange">4</div>
+          <div class="step-content">
+            <h3>Récupère ta pièce</h3>
+            <p>Récupère la pièce en main propre (recommandé) ou organise une expédition avec le vendeur. Tu as 14 jours pour exercer ton droit de rétractation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-vendeur" class="tab-content">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num dark">1</div>
+          <div class="step-content">
+            <h3>Crée ton annonce gratuitement</h3>
+            <p>Prends quelques photos, décris la pièce (marque, modèle, état, kilométrage), fixe ton prix et publie en moins de 2 minutes. C'est gratuit.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num dark">2</div>
+          <div class="step-content">
+            <h3>Reçois des messages</h3>
+            <p>Les acheteurs intéressés te contactent directement via la messagerie Mecaz. Tu reçois une notification pour chaque nouveau message.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num dark">3</div>
+          <div class="step-content">
+            <h3>L'acheteur paye</h3>
+            <p>Une fois l'accord trouvé, l'acheteur paye via Mecaz. Mecaz prélève une commission de 8% — tu n'as rien à gérer.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num dark">4</div>
+          <div class="step-content">
+            <h3>Tu reçois ton argent</h3>
+            <p>Le montant de la vente (moins la commission de 8%) t'est versé par virement bancaire sous 3 à 5 jours ouvrés.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GARANTIES -->
+<div style="background:#fff;padding:3rem 1.5rem;border-top:0.5px solid #e8e8e8;border-bottom:0.5px solid #e8e8e8">
+  <div style="max-width:800px;margin:0 auto">
+    <div class="section-title" style="margin-bottom:4px">Pourquoi choisir Mecaz ?</div>
+    <div class="section-sub">Des garanties concrètes pour acheter et vendre en confiance</div>
+    <div class="garanties">
+      <div class="garantie">
+        <i class="ti ti-shield-check" style="color:#3b6d11" aria-hidden="true"></i>
+        <h3>Paiement sécurisé</h3>
+        <p>Stripe chiffre toutes les transactions. Aucune donnée bancaire stockée.</p>
+      </div>
+      <div class="garantie">
+        <i class="ti ti-map-pin" style="color:#e8a020" aria-hidden="true"></i>
+        <h3>100% local</h3>
+        <p>Uniquement des annonces en Loire-Atlantique et Pays de Loire.</p>
+      </div>
+      <div class="garantie">
+        <i class="ti ti-rotate" style="color:#3b6d11" aria-hidden="true"></i>
+        <h3>14j de rétractation</h3>
+        <p>Tu changes d'avis ? Tu as 14 jours pour retourner la pièce.</p>
+      </div>
+      <div class="garantie">
+        <i class="ti ti-message-circle" style="color:#1a1a1a" aria-hidden="true"></i>
+        <h3>Messagerie intégrée</h3>
+        <p>Contacte le vendeur directement, sans donner ton numéro.</p>
+      </div>
+      <div class="garantie">
+        <i class="ti ti-star" style="color:#e8a020" aria-hidden="true"></i>
+        <h3>Notation vendeurs</h3>
+        <p>Les avis des acheteurs pour identifier les vendeurs fiables.</p>
+      </div>
+      <div class="garantie">
+        <i class="ti ti-tag" style="color:#1a1a1a" aria-hidden="true"></i>
+        <h3>Dépôt gratuit</h3>
+        <p>Publier une annonce est entièrement gratuit. On prélève seulement à la vente.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="section">
+  <div class="section-title">Questions fréquentes</div>
+  <div class="section-sub">Tout ce que tu dois savoir sur Mecaz</div>
+  <div class="faq">
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Combien coûte la commission Mecaz ? <i class="ti ti-chevron-down" aria-hidden="true"></i></div>
+      <div class="faq-a">La commission est de 8% du prix de vente. Elle est prélevée automatiquement au moment du paiement. Le dépôt d'annonce est entièrement gratuit.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Comment puis-je être sûr que la pièce est compatible avec mon véhicule ? <i class="ti ti-chevron-down" aria-hidden="true"></i></div>
+      <div class="faq-a">Utilise le scan de plaque d'immatriculation pour filtrer les annonces compatibles avec ton véhicule. Tu peux aussi contacter le vendeur directement pour vérifier la compatibilité avant d'acheter.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Que se passe-t-il si la pièce ne correspond pas à l'annonce ? <i class="ti ti-chevron-down" aria-hidden="true"></i></div>
+      <div class="faq-a">Tu disposes d'un droit de rétractation de 14 jours à compter de la réception. Contacte-nous à contact@mecaz.fr pour initier le retour. Les frais de retour sont à la charge de l'acheteur sauf si la pièce est défectueuse.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Quand vais-je recevoir mon argent en tant que vendeur ? <i class="ti ti-chevron-down" aria-hidden="true"></i></div>
+      <div class="faq-a">Tu reçois le montant de la vente (moins 8% de commission) par virement bancaire dans un délai de 3 à 5 jours ouvrés après confirmation du paiement par l'acheteur.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Peut-on récupérer la pièce en main propre ? <i class="ti ti-chevron-down" aria-hidden="true"></i></div>
+      <div class="faq-a">Oui, c'est même recommandé ! La récupération en main propre te permet de vérifier la pièce avant de valider la transaction. Coordonne-toi avec le vendeur via la messagerie Mecaz.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Mecaz accepte-t-il les professionnels ? <i class="ti ti-chevron-down" aria-hidden="true"></i></div>
+      <div class="faq-a">Oui ! Garagistes, casses automobiles et professionnels peuvent déposer des annonces sur Mecaz. Contacte-nous à contact@mecaz.fr pour une offre pro adaptée à tes besoins.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA FINAL -->
+<div class="cta-final">
+  <h2>Prêt à trouver ta pièce ?</h2>
+  <p>Des centaines d'annonces en Loire-Atlantique et Pays de Loire</p>
+  <div class="hero-btns">
+    <a class="btn-primary-hero" href="/">Voir les annonces</a>
+    <a class="btn-secondary-hero" href="/">Déposer une annonce</a>
+  </div>
+</div>
+
+<footer>
+  © 2025 Mecaz · <a href="/legal.html">Mentions légales & CGV</a> · <a href="/comment-ca-marche.html">Comment ça marche</a> · <a href="mailto:contact@mecaz.fr">contact@mecaz.fr</a>
+</footer>
+
+<script>
+function switchTab(t){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['acheteur','vendeur'][i]===t));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('active');
+}
+
+function toggleFaq(el){
+  el.classList.toggle('open');
+}
+</script>
+</body>
+</html>
