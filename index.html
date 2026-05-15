@@ -558,6 +558,7 @@ async function openDetail(id){
   document.getElementById('d-avis').textContent=(a.profiles?.rating_nb||0)+' avis';
   document.getElementById('d-tags').innerHTML=[a.categorie,a.etat,a.marque,a.modele,a.ville].filter(Boolean).map(t=>`<span class="tag">${t}</span>`).join('');
   document.getElementById('d-msg-btn').onclick=()=>startConversation(id,a);
+  document.getElementById('d-buy-btn').onclick=()=>openPayment(a);
   document.getElementById('rating-ok').style.display='none';
   renderStarInput();
 }
@@ -647,6 +648,20 @@ async function sendMsg(){
   await sb.from('messages').insert({conversation_id:activeConvId,sender_id:currentUser.id,content:txt});
 }
 
+async function marquerVendue(id){
+  if(!confirm('Marquer cette annonce comme vendue ? Elle sera retirée de la liste.'))return;
+  const{error}=await sb.from('annonces').update({active:false}).eq('id',id).eq('user_id',currentUser.id);
+  if(error){alert(error.message);return}
+  loadProfil();
+}
+
+async function supprimerAnnonce(id){
+  if(!confirm('Supprimer définitivement cette annonce ?'))return;
+  const{error}=await sb.from('annonces').delete().eq('id',id).eq('user_id',currentUser.id);
+  if(error){alert(error.message);return}
+  loadProfil();
+}
+
 async function loadProfil(){
   if(!currentUser){showView('auth');return}
   const p=currentProfile;
@@ -658,7 +673,18 @@ async function loadProfil(){
   document.getElementById('p-nb').textContent=ann?.length||0;
   const{data:msgs}=await sb.from('conversations').select('id').or(`acheteur_id.eq.${currentUser.id},vendeur_id.eq.${currentUser.id}`);
   document.getElementById('p-msgs').textContent=msgs?.length||0;
-  document.getElementById('profil-annonces').innerHTML=(ann&&ann.length)?ann.map(a=>`<div class="pai" onclick="openDetail(${a.id})"><div><p>${a.titre}</p><span>${a.ville} · ${a.categorie}</span></div><div class="pai-price">${a.prix} €</div></div>`).join(''):'<div class="empty-state"><i class="ti ti-package-off"></i>Aucune annonce</div>';
+  document.getElementById('profil-annonces').innerHTML=(ann&&ann.length)?ann.map(a=>`
+    <div class="pai">
+      <div onclick="openDetail(${a.id})" style="flex:1;cursor:pointer">
+        <p>${a.titre}</p>
+        <span>${a.ville} · ${a.categorie}</span>
+      </div>
+      <div class="pai-price" style="margin-right:10px">${a.prix} €</div>
+      <div style="display:flex;gap:6px">
+        <button onclick="marquerVendue(${a.id})" title="Marquer vendue" style="background:#eaf3de;border:none;border-radius:6px;padding:6px 8px;cursor:pointer;color:#3b6d11;font-size:13px"><i class="ti ti-check"></i></button>
+        <button onclick="supprimerAnnonce(${a.id})" title="Supprimer" style="background:#fcebeb;border:none;border-radius:6px;padding:6px 8px;cursor:pointer;color:#a32d2d;font-size:13px"><i class="ti ti-trash"></i></button>
+      </div>
+    </div>`).join(''):'<div class="empty-state"><i class="ti ti-package-off"></i>Aucune annonce</div>';
 }
 </script>
 </body>
