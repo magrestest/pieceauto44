@@ -233,7 +233,8 @@ textarea{resize:vertical;min-height:80px}
 @media(max-width:600px){
   nav{padding:0 1rem}
   .nav-logo-text{font-size:16px}
-  .btn-nav:not(.primary){display:none}
+  .btn-nav:not(.primary):not(#btn-connexion){display:none}
+  #btn-connexion{padding:6px 10px;font-size:12px}
   .btn-nav.primary{padding:6px 12px;font-size:12px}
   .avatar-nav{width:28px;height:28px;font-size:11px}
 
@@ -293,7 +294,7 @@ textarea{resize:vertical;min-height:80px}
     <span class="nav-logo-text">Me<span>caz</span></span>
   </div>
   <div class="nav-btns" id="nav-btns">
-    <button class="btn-nav" onclick="showView('auth')">Connexion</button>
+    <button id="btn-connexion" class="btn-nav" onclick="showView('auth')">Connexion</button>
     <button class="btn-nav primary" onclick="showView('depot')"><i class="ti ti-plus" aria-hidden="true"></i> Déposer</button>
   </div>
 </nav>
