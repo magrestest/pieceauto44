@@ -312,8 +312,19 @@ textarea{resize:vertical;min-height:80px}
         <div class="form-group"><label>Email</label><input type="email" id="login-email" placeholder="vous@email.com"></div>
         <div class="form-group"><label>Mot de passe</label><input type="password" id="login-pw" placeholder="••••••••"></div>
         <button class="btn-primary" id="btn-login" onclick="doLogin()">Se connecter</button>
+        <p style="text-align:center;margin-top:10px"><button onclick="showForgotPassword()" style="background:none;border:none;color:#888;font-size:13px;cursor:pointer;text-decoration:underline">Mot de passe oublié ?</button></p>
         <p class="err-msg" id="login-err"></p>
         <p class="info-msg" id="login-info"></p>
+      </div>
+
+      <!-- MOT DE PASSE OUBLIÉ -->
+      <div id="auth-forgot" style="display:none">
+        <p style="font-size:14px;color:#666;margin-bottom:1rem;line-height:1.6">Entre ton email et on t'envoie un lien pour réinitialiser ton mot de passe.</p>
+        <div class="form-group"><label>Email</label><input type="email" id="forgot-email" placeholder="vous@email.com"></div>
+        <button class="btn-primary" id="btn-forgot" onclick="doForgotPassword()">Envoyer le lien</button>
+        <p style="text-align:center;margin-top:10px"><button onclick="showLogin()" style="background:none;border:none;color:#888;font-size:13px;cursor:pointer;text-decoration:underline">← Retour à la connexion</button></p>
+        <p class="err-msg" id="forgot-err"></p>
+        <p class="info-msg" id="forgot-info"></p>
       </div>
       <div id="auth-register" style="display:none">
         <div class="form-group"><label>Prénom &amp; nom</label><input type="text" id="reg-name" placeholder="Jean Dupont"></div>
@@ -615,6 +626,32 @@ function switchAuthTab(t){
   document.querySelectorAll('.auth-tab').forEach((el,i)=>el.classList.toggle('active',i===(t==='login'?0:1)));
   document.getElementById('auth-login').style.display=t==='login'?'block':'none';
   document.getElementById('auth-register').style.display=t==='register'?'block':'none';
+}
+
+function showForgotPassword(){
+  document.getElementById('auth-login').style.display='none';
+  document.getElementById('auth-forgot').style.display='block';
+  document.getElementById('auth-register').style.display='none';
+}
+
+function showLogin(){
+  document.getElementById('auth-login').style.display='block';
+  document.getElementById('auth-forgot').style.display='none';
+  document.getElementById('auth-register').style.display='none';
+}
+
+async function doForgotPassword(){
+  const em=document.getElementById('forgot-email').value.trim();
+  const btn=document.getElementById('btn-forgot');
+  const err=document.getElementById('forgot-err');
+  const info=document.getElementById('forgot-info');
+  if(!em){err.textContent='Entre ton email.';err.style.display='block';return}
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Envoi...';
+  err.style.display='none';info.style.display='none';
+  const{error}=await sb.auth.resetPasswordForEmail(em,{redirectTo:'https://mecaz.fr'});
+  btn.disabled=false;btn.textContent='Envoyer le lien';
+  if(error){err.textContent=error.message;err.style.display='block'}
+  else{info.textContent='Email envoyé ! Vérifie ta boîte mail.';info.style.display='block'}
 }
 
 async function doLogin(){
