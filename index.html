@@ -749,8 +749,8 @@ async function openDetail(id){
   document.getElementById('d-stars').textContent=stars(a.profiles?.rating_avg||0);
   document.getElementById('d-avis').textContent=(a.profiles?.rating_nb||0)+' avis';
   document.getElementById('d-tags').innerHTML=[a.categorie,a.etat,a.marque,a.modele,a.ville].filter(Boolean).map(t=>`<span class="tag">${t}</span>`).join('');
-  document.getElementById('d-msg-btn').onclick=()=>startConversation(id,a);
   document.getElementById('d-buy-btn').onclick=()=>openPayment(a);
+  document.getElementById('d-msg-btn').onclick=()=>startConversation(id,a);
   document.getElementById('rating-ok').style.display='none';
   renderStarInput();
 }
