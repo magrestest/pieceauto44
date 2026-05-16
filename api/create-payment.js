@@ -1,5 +1,3 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -9,21 +7,21 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { amount, annonceId, titre, vendeurEmail } = req.body;
+    const Stripe = (await import('stripe')).default;
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-    // Commission 8%
+    const { amount, annonceId, titre, vendeurEmail } = req.body;
     const commission = Math.round(amount * 0.08);
-    const total = amount; // montant total payé par l'acheteur
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: total, // en centimes
+      amount,
       currency: 'eur',
       metadata: {
-        annonce_id: annonceId,
-        titre: titre,
-        vendeur_email: vendeurEmail,
-        commission: commission,
-        montant_vendeur: total - commission,
+        annonce_id: String(annonceId),
+        titre: titre || '',
+        vendeur_email: vendeurEmail || '',
+        commission: String(commission),
+        montant_vendeur: String(amount - commission),
       },
       description: `Mecaz — ${titre}`,
     });
@@ -31,7 +29,7 @@ export default async function handler(req, res) {
     res.status(200).json({
       clientSecret: paymentIntent.client_secret,
       commission,
-      montantVendeur: total - commission,
+      montantVendeur: amount - commission,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
