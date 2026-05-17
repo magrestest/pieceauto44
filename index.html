@@ -224,7 +224,23 @@ textarea{resize:vertical;min-height:80px}
 .btn-logout{background:none;border:0.5px solid #ddd;color:#aaa;padding:11px;border-radius:10px;cursor:pointer;width:100%;margin-top:1.5rem;font-size:14px;transition:border-color .15s}
 .btn-logout:hover{border-color:#999;color:#555}
 
-.spinner{display:inline-block;width:16px;height:16px;border:2px solid #ddd;border-top-color:#888;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+/* RECHERCHE AVANCÉE */
+.filtres-panel{background:#fff;border-bottom:0.5px solid #e8e8e8;padding:1rem 1.5rem;display:none}
+.filtres-panel.open{display:block}
+.filtres-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:1rem}
+.filtre-group label{display:block;font-size:12px;font-weight:500;color:#888;margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
+.filtre-group input,.filtre-group select{width:100%;padding:8px 10px;border:0.5px solid #ddd;border-radius:8px;font-size:13px;background:#fff;outline:none}
+.filtre-group input:focus,.filtre-group select:focus{border-color:#888}
+.prix-range{display:flex;gap:6px;align-items:center}
+.prix-range input{flex:1}
+.prix-range span{color:#aaa;font-size:13px}
+.filtres-actions{display:flex;gap:8px;justify-content:flex-end}
+.btn-reset{background:none;border:0.5px solid #ddd;color:#888;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:13px}
+.btn-reset:hover{border-color:#999;color:#555}
+.btn-appliquer{background:#0f0f0f;color:#fff;border:none;padding:7px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500}
+.btn-appliquer:hover{background:#333}
+.filtre-badge{display:inline-flex;align-items:center;justify-content:center;background:#e8a020;color:#0f0f0f;border-radius:50%;width:18px;height:18px;font-size:11px;font-weight:600;margin-left:4px;display:none}
+  .spinner{display:inline-block;width:16px;height:16px;border:2px solid #ddd;border-top-color:#888;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading{text-align:center;padding:2.5rem;color:#bbb;font-size:14px}
 .empty-state{text-align:center;padding:3rem 1rem;color:#bbb}
