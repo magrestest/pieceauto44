@@ -7,7 +7,6 @@
 <meta name="description" content="Achetez et vendez des pièces auto d'occasion entre particuliers en Loire-Atlantique et Pays de Loire. Alternateur, pare-choc, moteur, boîte de vitesse... Annonces gratuites, paiement sécurisé.">
 <meta name="keywords" content="pièces auto occasion, pièces détachées voiture, vente pièces auto particulier, Loire-Atlantique, Nantes, Saint-Nazaire, mécanique, marketplace auto">
 <meta name="author" content="Mecaz">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://mecaz.fr">
 
@@ -437,6 +436,62 @@ textarea{resize:vertical;min-height:80px}
     <div class="chip" onclick="setFilter(this,'Suspension')"><i class="ti ti-settings" aria-hidden="true"></i> Suspension</div>
     <div class="chip" onclick="setFilter(this,'Freinage')"><i class="ti ti-disc" aria-hidden="true"></i> Freinage</div>
     <div class="chip" onclick="setFilter(this,'Transmission')"><i class="ti ti-refresh" aria-hidden="true"></i> Transmission</div>
+    <div class="chip" onclick="toggleFiltres(this)" id="chip-filtres" style="margin-left:auto;flex-shrink:0"><i class="ti ti-adjustments-horizontal" aria-hidden="true"></i> Filtres <span class="filtre-badge" id="filtre-badge">0</span></div>
+  </div>
+
+  <!-- PANNEAU FILTRES AVANCÉS -->
+  <div class="filtres-panel" id="filtres-panel">
+    <div class="filtres-grid">
+      <div class="filtre-group">
+        <label>Marque</label>
+        <select id="f-adv-marque" onchange="updateBadge()">
+          <option value="">Toutes marques</option>
+          <option>Renault</option><option>Peugeot</option><option>Citroën</option>
+          <option>Volkswagen</option><option>Ford</option><option>Toyota</option>
+          <option>BMW</option><option>Mercedes</option><option>Audi</option>
+          <option>Opel</option><option>Fiat</option><option>Seat</option>
+        </select>
+      </div>
+      <div class="filtre-group">
+        <label>État</label>
+        <select id="f-adv-etat" onchange="updateBadge()">
+          <option value="">Tous états</option>
+          <option>Neuf</option>
+          <option>Occasion — bon état</option>
+          <option>Occasion — à vérifier</option>
+          <option>Pour pièces</option>
+        </select>
+      </div>
+      <div class="filtre-group">
+        <label>Prix (€)</label>
+        <div class="prix-range">
+          <input type="number" id="f-adv-prix-min" placeholder="Min" min="0" oninput="updateBadge()">
+          <span>→</span>
+          <input type="number" id="f-adv-prix-max" placeholder="Max" min="0" oninput="updateBadge()">
+        </div>
+      </div>
+      <div class="filtre-group">
+        <label>Année véhicule</label>
+        <div class="prix-range">
+          <input type="number" id="f-adv-annee-min" placeholder="De" min="1990" max="2025" oninput="updateBadge()">
+          <span>→</span>
+          <input type="number" id="f-adv-annee-max" placeholder="À" min="1990" max="2025" oninput="updateBadge()">
+        </div>
+      </div>
+      <div class="filtre-group">
+        <label>Trier par</label>
+        <select id="f-adv-tri" onchange="updateBadge()">
+          <option value="">Plus récent</option>
+          <option value="prix_asc">Prix croissant</option>
+          <option value="prix_desc">Prix décroissant</option>
+          <option value="ancien">Plus ancien</option>
+        </select>
+      </div>
+    </div>
+    <div class="filtres-actions">
+      <button class="btn-reset" onclick="resetFiltres()">Réinitialiser</button>
+      <button class="btn-appliquer" onclick="loadAnnonces()">Appliquer</button>
+    </div>
   </div>
 
   <div class="annonces">
@@ -697,6 +752,29 @@ function scanPlaque(){
   else{res.style.display='inline-block';res.style.background='rgba(200,50,50,0.15)';res.style.color='#c0392b';res.textContent='Plaque non trouvée';}
 }
 
+function toggleFiltres(el){
+  const panel=document.getElementById('filtres-panel');
+  panel.classList.toggle('open');
+  el.classList.toggle('active');
+}
+
+function updateBadge(){
+  const fields=['f-adv-marque','f-adv-etat','f-adv-prix-min','f-adv-prix-max','f-adv-annee-min','f-adv-annee-max','f-adv-tri'];
+  const count=fields.filter(id=>document.getElementById(id)?.value).length;
+  const badge=document.getElementById('filtre-badge');
+  badge.textContent=count;
+  badge.style.display=count>0?'inline-flex':'none';
+}
+
+function resetFiltres(){
+  ['f-adv-marque','f-adv-etat','f-adv-prix-min','f-adv-prix-max','f-adv-annee-min','f-adv-annee-max','f-adv-tri'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.value='';
+  });
+  updateBadge();
+  loadAnnonces();
+}
+
 function setFilter(el,cat){document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');activeFilter=cat;loadAnnonces()}
 
 async function loadAnnonces(){
@@ -704,10 +782,27 @@ async function loadAnnonces(){
   grid.innerHTML='<div class="loading"><span class="spinner"></span>Chargement...</div>';
   let q=sb.from('annonces').select('*, profiles(name,rating_avg,rating_nb)').eq('active',true).order('created_at',{ascending:false});
   const search=document.getElementById('search-input').value.trim(),ville=document.getElementById('search-dept').value;
+  const marque=document.getElementById('f-adv-marque')?.value;
+  const etat=document.getElementById('f-adv-etat')?.value;
+  const prixMin=parseFloat(document.getElementById('f-adv-prix-min')?.value)||null;
+  const prixMax=parseFloat(document.getElementById('f-adv-prix-max')?.value)||null;
+  const anneeMin=parseInt(document.getElementById('f-adv-annee-min')?.value)||null;
+  const anneeMax=parseInt(document.getElementById('f-adv-annee-max')?.value)||null;
+  const tri=document.getElementById('f-adv-tri')?.value||'';
+
   if(activeFilter)q=q.eq('categorie',activeFilter);
   if(ville)q=q.eq('ville',ville);
   if(search)q=q.or(`titre.ilike.%${search}%,marque.ilike.%${search}%,modele.ilike.%${search}%`);
-  const{data,error}=await q;
+  if(marque)q=q.ilike('marque',`%${marque}%`);
+  if(etat)q=q.eq('etat',etat);
+  if(prixMin)q=q.gte('prix',prixMin);
+  if(prixMax)q=q.lte('prix',prixMax);
+  if(anneeMin)q=q.gte('annee_debut',anneeMin);
+  if(anneeMax)q=q.lte('annee_fin',anneeMax);
+  if(tri==='prix_asc')q=q.order('prix',{ascending:true});
+  else if(tri==='prix_desc')q=q.order('prix',{ascending:false});
+  else if(tri==='ancien')q=q.order('created_at',{ascending:true});
+  else q=q.order('created_at',{ascending:false});
   if(error){grid.innerHTML='<div class="empty-state"><i class="ti ti-alert-circle"></i>Erreur de chargement</div>';return}
   const ids=(data||[]).map(a=>a.id);let photosMap={};
   if(ids.length){const{data:ph}=await sb.from('annonce_photos').select('annonce_id,url').in('annonce_id',ids).eq('ordre',0);(ph||[]).forEach(p=>{photosMap[p.annonce_id]=p.url})}
