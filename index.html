@@ -823,6 +823,7 @@ async function loadAnnonces(){
   else if(tri==='prix_desc')q=q.order('prix',{ascending:false});
   else if(tri==='ancien')q=q.order('created_at',{ascending:true});
   else q=q.order('created_at',{ascending:false});
+  const{data,error}=await q;
   if(error){grid.innerHTML='<div class="empty-state"><i class="ti ti-alert-circle"></i>Erreur de chargement</div>';return}
   const ids=(data||[]).map(a=>a.id);let photosMap={};
   if(ids.length){const{data:ph}=await sb.from('annonce_photos').select('annonce_id,url').in('annonce_id',ids).eq('ordre',0);(ph||[]).forEach(p=>{photosMap[p.annonce_id]=p.url})}
