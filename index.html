@@ -755,47 +755,7 @@ async function openDetail(id){
   renderStarInput();
 }
 
-let stripeInstance=null,cardElement=null,currentAnnonce=null;
-function initStripe(){if(!stripeInstance)stripeInstance=Stripe(STRIPE_PUBLIC_KEY)}
-async function openPayment(annonce){
-  if(!currentUser){showView('auth');return}
-  if(annonce.profiles?.id===currentUser.id){alert('Tu ne peux pas acheter ta propre annonce.');return}
-  initStripe();currentAnnonce=annonce;
-  const prix=annonce.prix,commission=Math.round(prix*0.08*100)/100;
-  document.getElementById('pay-titre').textContent=annonce.titre;
-  document.getElementById('pay-detail').textContent=annonce.ville+' · '+(annonce.marque||'')+' '+(annonce.modele||'');
-  document.getElementById('pay-prix').textContent=prix.toFixed(2)+' €';
-  document.getElementById('pay-commission').textContent=commission.toFixed(2)+' €';
-  document.getElementById('pay-total').textContent=prix.toFixed(2)+' €';
-  document.getElementById('payment-modal').style.display='flex';
-  if(!cardElement){
-    const el=stripeInstance.elements();
-    cardElement=el.create('card',{style:{base:{fontSize:'15px',color:'#1a1a1a','::placeholder':{color:'#aaa'}}}});
-    cardElement.mount('#card-element');
-    cardElement.on('change',e=>{const err=document.getElementById('card-errors');if(e.error){err.textContent=e.error.message;err.style.display='block'}else err.style.display='none'});
-  }
-}
-function closePayment(){document.getElementById('payment-modal').style.display='none'}
-async function confirmPayment(){
-  if(!currentAnnonce||!cardElement)return;
-  const btn=document.getElementById('pay-btn');
-  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Traitement...';
-  try{
-    const res=await fetch('/api/create-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:Math.round(currentAnnonce.prix*100),annonceId:currentAnnonce.id,titre:currentAnnonce.titre,vendeurEmail:''})});
-    const{clientSecret,error:apiErr}=await res.json();
-    if(apiErr)throw new Error(apiErr);
-    const{error,paymentIntent}=await stripeInstance.confirmCardPayment(clientSecret,{payment_method:{card:cardElement}});
-    if(error){document.getElementById('card-errors').textContent=error.message;document.getElementById('card-errors').style.display='block'}
-    else if(paymentIntent.status==='succeeded'){
-      closePayment();
-      alert('✅ Paiement réussi ! Le vendeur va être contacté.');
-      await sb.from('annonces').update({active:false}).eq('id',currentAnnonce.id);
-      loadAnnonces();
-    }
-  }catch(e){document.getElementById('card-errors').textContent=e.message;document.getElementById('card-errors').style.display='block'}
-  btn.disabled=false;btn.innerHTML='<i class="ti ti-lock"></i> Payer en sécurité';
-}
-  function setRating(n){myRating=n;renderStarInput()}
+function setRating(n){myRating=n;renderStarInput()}
 function renderStarInput(){document.querySelectorAll('.star-btn').forEach((b,i)=>b.classList.toggle('lit',i<myRating))}
 
 async function submitRating(){
@@ -872,6 +832,12 @@ async function loadMessages(){
 function subscribeMessages(){
   if(realtimeSub)sb.removeChannel(realtimeSub);
   realtimeSub=sb.channel('msgs-'+activeConvId).on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:`conversation_id=eq.${activeConvId}`},()=>loadMessages()).subscribe();
+}
+
+async function sendEmailNotif(type, to, data){
+  try{
+    await fetch('/api/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type,to,data})});
+  }catch(e){console.log('Email notif error:',e)}
 }
 
 async function sendMsg(){
