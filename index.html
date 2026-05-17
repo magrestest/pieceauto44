@@ -755,8 +755,11 @@ function scanPlaque(){
 
 function toggleFiltres(el){
   const panel=document.getElementById('filtres-panel');
+  const isOpen=panel.classList.contains('open');
   panel.classList.toggle('open');
-  el.classList.toggle('active');
+  el.style.background=isOpen?'':'#0f0f0f';
+  el.style.color=isOpen?'':'#fff';
+  el.style.borderColor=isOpen?'':'#0f0f0f';
 }
 
 function updateBadge(){
