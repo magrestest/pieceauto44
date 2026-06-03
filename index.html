@@ -587,6 +587,10 @@ textarea{resize:vertical;min-height:80px}
         <input type="file" id="f-photos" accept="image/*" multiple onchange="previewPhotos(this)">
       </div>
       <div class="photo-preview" id="photo-preview"></div>
+      <button type="button" id="btn-analyze" onclick="analyzePhoto()" style="display:none;margin-top:10px;background:rgba(232,160,32,0.15);border:0.5px solid rgba(232,160,32,0.4);color:#e8a020;padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;width:100%;display:none">
+  <i class="ti ti-sparkles"></i> Analyser la pièce avec l'IA
+</button>
+<div id="analyze-result" style="display:none;background:#f9f9f7;border:0.5px solid #e8e8e8;border-radius:10px;padding:12px;margin-top:10px;font-size:13px;color:#555"></div>
     </div>
     <div class="form-group"><label>Titre</label><input type="text" id="f-titre" placeholder="Ex : Alternateur Renault Clio 3 1.5 dCi"></div>
     <div class="form-row">
@@ -713,7 +717,90 @@ function showLogin(){
   document.getElementById('auth-forgot').style.display='none';
   document.getElementById('auth-register').style.display='none';
 }
+  
+async function analyzePhoto(){
+  const files=document.getElementById('f-photos').files;
+  if(!files.length)return;
+  const btn=document.getElementById('btn-analyze');
+  const result=document.getElementById('analyze-result');
+  btn.innerHTML='<span class="spinner"></span> Analyse en cours...';
+  btn.disabled=true;
+  result.style.display='none';
 
+  // Convertir la première photo en base64
+  const file=files[0];
+  const base64=await new Promise(res=>{
+    const r=new FileReader();
+    r.onload=()=>res(r.result.split(',')[1]);
+    r.readAsDataURL(file);
+  });
+  const mediaType=file.type||'image/jpeg';
+
+  try{
+    const response=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{
+          role:'user',
+          content:[
+            {type:'image',source:{type:'base64',media_type:mediaType,data:base64}},
+            {type:'text',text:`Tu es un expert en pièces automobiles d'occasion. Analyse cette photo et retourne UNIQUEMENT un objet JSON valide (sans markdown, sans backticks) avec ces champs:
+{
+  "titre": "nom court de la pièce en français (ex: Porte avant gauche)",
+  "categorie": "une valeur parmi: Moteur, Carrosserie, Électronique, Suspension, Freinage, Transmission, Autre",
+  "etat": "une valeur parmi: Occasion — bon état, Occasion — à vérifier, Neuf, Pour pièces",
+  "description": "description courte de l'état visible de la pièce, 1-2 phrases",
+  "prix_min": nombre entier en euros (prix bas réaliste marché occasion),
+  "prix_max": nombre entier en euros (prix haut réaliste marché occasion),
+  "prix_suggere": nombre entier en euros (prix recommandé selon l'état visible)
+}`}
+          ]
+        }]
+      })
+    });
+    const data=await response.json();
+    const text=data.content[0].text;
+    const parsed=JSON.parse(text);
+
+    // Pré-remplir les champs
+    if(parsed.titre)document.getElementById('f-titre').value=parsed.titre;
+    if(parsed.categorie){
+      const sel=document.getElementById('f-cat');
+      for(let o of sel.options){if(o.value===parsed.categorie){sel.value=parsed.categorie;break}}
+    }
+    if(parsed.etat){
+      const sel=document.getElementById('f-etat');
+      for(let o of sel.options){if(o.value===parsed.etat){sel.value=parsed.etat;break}}
+    }
+    if(parsed.description)document.getElementById('f-desc').value=parsed.description;
+    if(parsed.prix_suggere)document.getElementById('f-prix').value=parsed.prix_suggere;
+
+    // Afficher le résumé
+    result.style.display='block';
+    result.innerHTML=`
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;color:#3b6d11;font-weight:500">
+        <i class="ti ti-sparkles"></i> Analyse complète
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div>🔍 <b>Pièce :</b> ${parsed.titre}</div>
+        <div>📦 <b>État estimé :</b> ${parsed.etat}</div>
+        <div>💶 <b>Fourchette marché :</b> ${parsed.prix_min}€ — ${parsed.prix_max}€</div>
+        <div>✅ <b>Prix suggéré :</b> <span style="color:#e8a020;font-weight:500">${parsed.prix_suggere}€</span></div>
+      </div>
+      <div style="margin-top:8px;font-size:12px;color:#aaa">Les champs ont été pré-remplis — tu peux tout modifier avant de publier.</div>
+    `;
+    btn.innerHTML='<i class="ti ti-sparkles"></i> Ré-analyser';
+    btn.disabled=false;
+  }catch(e){
+    result.style.display='block';
+    result.innerHTML='<span style="color:#c0392b">Erreur d\'analyse. Remplis les champs manuellement.</span>';
+    btn.innerHTML='<i class="ti ti-sparkles"></i> Analyser la pièce avec l\'IA';
+    btn.disabled=false;
+  }
+}
 async function doForgotPassword(){
   const em=document.getElementById('forgot-email').value.trim();
   const btn=document.getElementById('btn-forgot');
@@ -884,8 +971,14 @@ async function submitRating(){
 }
 
 function previewPhotos(input){
-  const prev=document.getElementById('photo-preview');prev.innerHTML='';
-  Array.from(input.files).slice(0,5).forEach(f=>{prev.innerHTML+=`<img src="${URL.createObjectURL(f)}" class="photo-thumb" alt="">`});
+  const prev=document.getElementById('photo-preview');
+  prev.innerHTML='';
+  Array.from(input.files).slice(0,5).forEach(f=>{
+    prev.innerHTML+=`<img src="${URL.createObjectURL(f)}" class="photo-thumb" alt="">`;
+  });
+  if(input.files.length>0){
+    document.getElementById('btn-analyze').style.display='block';
+  }
 }
 
 async function submitAnnonce(){
