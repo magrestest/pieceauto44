@@ -1,3 +1,4 @@
+const fetch = require('node-fetch');
 export default async function handler(req, res) {
   console.log('analyze-photo called', req.method);
   res.setHeader('Access-Control-Allow-Origin', '*');
