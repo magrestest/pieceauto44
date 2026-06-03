@@ -37,5 +37,9 @@ export default async function handler(req, res) {
   });
 
   const data = await response.json();
-  res.status(200).json({ result: data.content[0].text });
+console.log('Anthropic response:', JSON.stringify(data));
+if(!data.content || !data.content[0]) {
+  return res.status(500).json({ error: 'Réponse inattendue', raw: data });
+}
+res.status(200).json({ result: data.content[0].text });
 }
