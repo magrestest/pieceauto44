@@ -5,3 +5,11 @@
     "stripe": "^14.0.0"
   }
 }
+{
+  "name": "mecaz",
+  "version": "1.0.0",
+  "dependencies": {
+    "stripe": "^14.0.0",
+    "node-fetch": "^2.7.0"
+  }
+}
