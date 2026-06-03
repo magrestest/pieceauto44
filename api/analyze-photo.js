@@ -1,4 +1,7 @@
 export default async function handler(req, res) {
+  console.log('analyze-photo called', req.method, req.body ? 'body ok' : 'no body');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  // ... reste du codeexport default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
