@@ -743,7 +743,8 @@ try{
       body:JSON.stringify({image:base64,mediaType})
     });
     const data=await response.json();
-    const parsed=JSON.parse(data.result);
+    const clean=data.result.replace(/```json|```/g,'').trim();
+const parsed=JSON.parse(clean);
 
     // Pré-remplir les champs
     if(parsed.titre)document.getElementById('f-titre').value=parsed.titre;
