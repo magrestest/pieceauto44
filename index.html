@@ -953,14 +953,27 @@ async function submitRating(){
 function previewPhotos(input){
   const prev=document.getElementById('photo-preview');
   prev.innerHTML='';
-  Array.from(input.files).slice(0,5).forEach(f=>{
-    prev.innerHTML+=`<img src="${URL.createObjectURL(f)}" class="photo-thumb" alt="">`;
+  Array.from(input.files).slice(0,5).forEach((f,i)=>{
+    const wrapper=document.createElement('div');
+    wrapper.style.cssText='position:relative;display:inline-block';
+    const img=document.createElement('img');
+    img.src=URL.createObjectURL(f);
+    img.className='photo-thumb';
+    const btn=document.createElement('button');
+    btn.innerHTML='×';
+    btn.style.cssText='position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#c0392b;color:#fff;border:none;cursor:pointer;font-size:12px;line-height:1;display:flex;align-items:center;justify-content:center;padding:0';
+    btn.onclick=()=>{
+      const dt=new DataTransfer();
+      Array.from(input.files).forEach((file,j)=>{if(j!==i)dt.items.add(file)});
+      input.files=dt.files;
+      previewPhotos(input);
+    };
+    wrapper.appendChild(img);
+    wrapper.appendChild(btn);
+    prev.appendChild(wrapper);
   });
-  if(input.files.length>0){
-    document.getElementById('btn-analyze').style.display='block';
-  }
+  document.getElementById('btn-analyze').style.display=input.files.length>0?'block':'none';
 }
-
 async function submitAnnonce(){
   if(!currentUser){showView('auth');return}
   const titre=document.getElementById('f-titre').value.trim(),prix=parseFloat(document.getElementById('f-prix').value)||0;
